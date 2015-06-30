@@ -13,6 +13,7 @@
 		CBF1396F1B4341C3008F8901 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBF1396E1B4341C3008F8901 /* Images.xcassets */; };
 		CBF139721B4341C3008F8901 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBF139701B4341C3008F8901 /* LaunchScreen.xib */; };
 		CBF1397E1B4341C3008F8901 /* ARsunTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF1397D1B4341C3008F8901 /* ARsunTests.swift */; };
+		CBF139881B434C51008F8901 /* DrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF139871B434C51008F8901 /* DrawingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +37,7 @@
 		CBF139771B4341C3008F8901 /* ARsunTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ARsunTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBF1397C1B4341C3008F8901 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CBF1397D1B4341C3008F8901 /* ARsunTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARsunTests.swift; sourceTree = "<group>"; };
+		CBF139871B434C51008F8901 /* DrawingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 			children = (
 				CBF139671B4341C3008F8901 /* AppDelegate.swift */,
 				CBF139691B4341C3008F8901 /* ViewController.swift */,
+				CBF139871B434C51008F8901 /* DrawingView.swift */,
 				CBF1396B1B4341C3008F8901 /* Main.storyboard */,
 				CBF1396E1B4341C3008F8901 /* Images.xcassets */,
 				CBF139701B4341C3008F8901 /* LaunchScreen.xib */,
@@ -161,6 +164,7 @@
 				TargetAttributes = {
 					CBF139611B4341C3008F8901 = {
 						CreatedOnToolsVersion = 6.3;
+						DevelopmentTeam = 4EKX9224RV;
 					};
 					CBF139761B4341C3008F8901 = {
 						CreatedOnToolsVersion = 6.3;
@@ -212,6 +216,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CBF139881B434C51008F8901 /* DrawingView.swift in Sources */,
 				CBF1396A1B4341C3008F8901 /* ViewController.swift in Sources */,
 				CBF139681B4341C3008F8901 /* AppDelegate.swift in Sources */,
 			);
@@ -342,9 +347,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = ARsun/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -352,9 +360,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = ARsun/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
