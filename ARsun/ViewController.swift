@@ -8,21 +8,30 @@
 
 import UIKit
 import AVFoundation
+import CoreLocation
 
-class ViewController: UIViewController {
+class ViewController: UIViewController , CLLocationManagerDelegate{
     
     let captureSession = AVCaptureSession()
+   
     // If we find a device we'll store it here for later use
     var captureDevice : AVCaptureDevice?
+    var locationManager: CLLocationManager! = CLLocationManager()
+    var hasUpdated = false
+    var location: CLLocation!
+    var dataGetter:NavalDataGetter!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         // Do any additional setup after loading the view, typically from a nib.
         captureSession.sessionPreset = AVCaptureSessionPresetHigh
+        locationManager.requestAlwaysAuthorization()
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.delegate = self
+        locationManager.startUpdatingLocation()
         
         let devices = AVCaptureDevice.devices()
-        
         // Loop through all the capture devices on this phone
         for device in devices {
             // Make sure this particular device supports video
@@ -36,6 +45,25 @@ class ViewController: UIViewController {
         if captureDevice != nil {
             beginSession()
         }
+    }
+    func locationManager(manager: CLLocationManager!,
+        didUpdateLocations locations: [AnyObject]!) {
+    if (!hasUpdated){
+        hasUpdated = true
+        location = locations.last as! CLLocation
+        dataGetter = NavalDataGetter(bodyIn: "moon", location: location)
+        
+    } else {
+        locationManager.stopUpdatingLocation()
+        locationManager = nil
+            }
+
+    }
+    
+    func locationManager(manager: CLLocationManager!,
+        didFailWithError error: NSError!)
+    {
+        println("Error getting location.")
     }
 
     override func didReceiveMemoryWarning() {

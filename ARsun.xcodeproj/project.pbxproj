@@ -14,6 +14,8 @@
 		CBF139721B4341C3008F8901 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBF139701B4341C3008F8901 /* LaunchScreen.xib */; };
 		CBF1397E1B4341C3008F8901 /* ARsunTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF1397D1B4341C3008F8901 /* ARsunTests.swift */; };
 		CBF139881B434C51008F8901 /* DrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF139871B434C51008F8901 /* DrawingView.swift */; };
+		CBF1398A1B4378D1008F8901 /* NavalDataGetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF139891B4378D1008F8901 /* NavalDataGetter.swift */; };
+		CBF1398C1B4428DB008F8901 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBF1398B1B4428DB008F8901 /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +40,8 @@
 		CBF1397C1B4341C3008F8901 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CBF1397D1B4341C3008F8901 /* ARsunTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARsunTests.swift; sourceTree = "<group>"; };
 		CBF139871B434C51008F8901 /* DrawingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawingView.swift; sourceTree = "<group>"; };
+		CBF139891B4378D1008F8901 /* NavalDataGetter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavalDataGetter.swift; sourceTree = "<group>"; };
+		CBF1398B1B4428DB008F8901 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CBF1398C1B4428DB008F8901 /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,6 +66,7 @@
 		CBF139591B4341C3008F8901 = {
 			isa = PBXGroup;
 			children = (
+				CBF1398B1B4428DB008F8901 /* CoreLocation.framework */,
 				CBF139641B4341C3008F8901 /* ARsun */,
 				CBF1397A1B4341C3008F8901 /* ARsunTests */,
 				CBF139631B4341C3008F8901 /* Products */,
@@ -81,6 +87,7 @@
 			children = (
 				CBF139671B4341C3008F8901 /* AppDelegate.swift */,
 				CBF139691B4341C3008F8901 /* ViewController.swift */,
+				CBF139891B4378D1008F8901 /* NavalDataGetter.swift */,
 				CBF139871B434C51008F8901 /* DrawingView.swift */,
 				CBF1396B1B4341C3008F8901 /* Main.storyboard */,
 				CBF1396E1B4341C3008F8901 /* Images.xcassets */,
@@ -219,6 +226,7 @@
 				CBF139881B434C51008F8901 /* DrawingView.swift in Sources */,
 				CBF1396A1B4341C3008F8901 /* ViewController.swift in Sources */,
 				CBF139681B4341C3008F8901 /* AppDelegate.swift in Sources */,
+				CBF1398A1B4378D1008F8901 /* NavalDataGetter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -422,6 +430,7 @@
 				CBF139831B4341C3008F8901 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		CBF139841B4341C3008F8901 /* Build configuration list for PBXNativeTarget "ARsunTests" */ = {
 			isa = XCConfigurationList;
@@ -430,6 +439,7 @@
 				CBF139861B4341C3008F8901 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
