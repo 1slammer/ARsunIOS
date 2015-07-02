@@ -12,6 +12,7 @@ import CoreLocation
 class NavalDataGetter : NSObject {
     
     var longVals = [Int]()
+    var isFinished = false
     var latVals = [Int]()
     var myVals = [String: [Double]]()
     var orderedVals = Array<Array<Double>>()//[[Double]]()
@@ -71,9 +72,9 @@ class NavalDataGetter : NSObject {
         url = url + String(latData[0]) + "&lat_min="
         url = url + String(latData[1]) + "&tz=" + tz + "&tz_sign=" + tz_sign
         
-        dispatch_async(dispatch_get_main_queue()) {
+       // dispatch_async(dispatch_get_main_queue()) {
             self.startGetting(self.url)
-        }
+        //}
         
         
         }
@@ -111,6 +112,7 @@ class NavalDataGetter : NSObject {
                 while scanner.scanUpToCharactersFromSet(whitespaceAndPunctuationSet, intoString: &parsedString),
                     let val = parsedString as? String
                 {
+                    
                     if (val.rangeOfString("<") != nil){
                         break;
                     }
@@ -118,12 +120,14 @@ class NavalDataGetter : NSObject {
                         key = val
                         }
                     else if x == 1 {
-                        myDubs.append((val as NSString).doubleValue)
+                        var doubleValue : Double = NSString(string: val).doubleValue
+                        myDubs.append(doubleValue)
                         self.orderedVals.append(Array(count: 2, repeatedValue: 1))
                         self.orderedVals[y][0] = (val as NSString).doubleValue
                     }
                     else if x == 2 {
-                        myDubs.append((val as NSString).doubleValue)
+                        var doubleValue : Double = NSString(string: val).doubleValue
+                        myDubs.append(doubleValue)
                         self.orderedVals[y][1] = (val as NSString).doubleValue
                         x = -1
                         self.myVals[key] = myDubs
@@ -134,12 +138,13 @@ class NavalDataGetter : NSObject {
                     
                     
                 }
-                
+        
             }
-            for number in self.myVals {
-                println("helo")
-                println("\(number)")
-        }
+            self.isFinished = true
+//            for val in self.myVals{
+//                println(val)
+//            }
+
         }
         task.resume()
     }

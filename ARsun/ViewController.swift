@@ -13,6 +13,10 @@ import CoreLocation
 class ViewController: UIViewController , CLLocationManagerDelegate{
     
     let captureSession = AVCaptureSession()
+    let f = Test_View(frame: CGRectMake(0, 250, 110, 110))
+
+    var moonButton: UIButton!
+    var sunButton: UIButton!
    
     // If we find a device we'll store it here for later use
     var captureDevice : AVCaptureDevice?
@@ -51,7 +55,6 @@ class ViewController: UIViewController , CLLocationManagerDelegate{
     if (!hasUpdated){
         hasUpdated = true
         location = locations.last as! CLLocation
-        dataGetter = NavalDataGetter(bodyIn: "moon", location: location)
         
     } else {
         locationManager.stopUpdatingLocation()
@@ -83,6 +86,87 @@ class ViewController: UIViewController , CLLocationManagerDelegate{
         self.view.layer.addSublayer(previewLayer)
         previewLayer?.frame = self.view.layer.frame
         captureSession.startRunning()
+        moonButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+        moonButton.frame = CGRectMake(180, 500, 100, 50)
+        moonButton.backgroundColor = UIColor.blueColor()
+        moonButton.setTitle("Moon Button", forState: UIControlState.Normal)
+        moonButton.addTarget(self, action: "moonButtonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+        
+        self.view.addSubview(moonButton)
+        sunButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+        sunButton.frame = CGRectMake(35, 500, 100, 50)
+        sunButton.backgroundColor = UIColor.blueColor()
+        sunButton.setTitle("Sun Button", forState: UIControlState.Normal)
+        sunButton.addTarget(self, action: "sunButtonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+        
+        self.view.addSubview(sunButton)
+        self.view.addSubview(f)
+        f.backgroundColor = UIColor.clearColor()
+
+    }
+    
+    
+    func moonButtonAction(sender:UIButton!)
+    {
+        dataGetter = NavalDataGetter(bodyIn: "Moon", location: location)
+        while !dataGetter.isFinished {
+            sleep(1)
+                }
+        for val in self.dataGetter.myVals{
+            println(val)
+        }
+        for var x = 0; x < 5; x++ {
+        f.setNeedsDisplay()
+        //self.view.setNeedsDisplay()
+            sleep(1)
+        NSRunLoop.currentRunLoop().runMode(NSDefaultRunLoopMode, beforeDate: NSDate())
+        }
+    }
+    
+    func sunButtonAction(sender:UIButton!)
+    {
+        dataGetter = NavalDataGetter(bodyIn: "Sun", location: location)
+    }
+    
+    class Test_View: UIView {
+        var hasCalled = false
+        var x = 70
+        var y = 70
+        
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+        }
+        
+        required init(coder aDecoder: NSCoder) {
+            super.init(coder: aDecoder)
+        }
+        override func drawRect(rect: CGRect) {
+            super.drawRect(rect)
+            if hasCalled {
+                var path = UIBezierPath()
+                path.moveToPoint(CGPoint(x: 50, y:50))
+                path.addLineToPoint(CGPoint(x: x, y: y))
+                var color:UIColor = UIColor.blueColor()
+                color.set()
+                path.stroke()
+            } else {
+            let h = rect.height
+            let w = rect.width
+            var color:UIColor = UIColor.blueColor()
+            
+            var drect = CGRect(x: (w * 0.25),y: (h * 0.25),width: (w * 0.5),height: (h * 0.5))
+            var bpath:UIBezierPath = UIBezierPath(rect: drect)
+            
+            color.set()
+            bpath.stroke()
+                hasCalled = true
+            }
+            
+            NSLog("drawRect has updated the view")
+            
+        }
+        
+        
     }
     
     
