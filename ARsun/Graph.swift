@@ -109,6 +109,10 @@ class Graph : NSObject {
     func containsTime() -> Bool {
         return containsT
     }
+    func updateCoordinates(newCoor:[[Double]]) {
+        spCoor = newCoor
+        ready = true
+    }
     
     func isReady() -> Bool {
         return ready
@@ -132,17 +136,19 @@ class Graph : NSObject {
         return output
     }
     
-    func points(pitch:Double, azimuth:Double, roll:Double) -> [Float] {
-        var output:[Float]!
+    func points(pitch:Double, azimuth:Double, roll:Double) -> [Double] {
+        var output:[Double]!
         if(ready){
-            var azimuth1 = normalize((azimuth - M_PI).degreesToRadians).degreesToRadians
-            output = [Float](count:(spCoor.count - 1) * 4, repeatedValue: 0.0)
+            println(azimuth)
+            var azimuth1 = normalize((azimuth - M_PI) * (180/M_PI)).degreesToRadians
+            println(azimuth1)
+            output = [Double](count:(spCoor.count - 1) * 4, repeatedValue: 0.0)
             var tmp = Array(count:spCoor.count, repeatedValue:[Double](count:2, repeatedValue:0.0))
             
             for var i = 0; i < spCoor.count; i++ {
                 //degrees from phone pointing vector
                 tmp[i][0] = (spCoor[i][0].degreesToRadians) - pitch;
-                tmp[i][1] = (spCoor[i][1].degreesToRadians) - azimuth;
+                tmp[i][1] = (spCoor[i][1].degreesToRadians) - azimuth1;
                 //pixels per degree from pointing vector
                 tmp[i][0] = tmp[i][0] * pdh;
                 tmp[i][1] = tmp[i][1] * pdw;
@@ -158,10 +164,10 @@ class Graph : NSObject {
             }
             for (var i = 0; i < tmp.count-1; i++) {
                 //if (i != tmp.length-1) {
-                output[i * 4] = Float(round(tmp[i][1]))
-                output[i * 4 + 1] = Float(round(tmp[i][0]))
-                output[i * 4 + 2] = Float(round(tmp[i+1][1]))
-                output[i * 4 + 3] = Float(round(tmp[i+1][0]))
+                output[i * 4] = round(tmp[i][1])
+                output[i * 4 + 1] = round(tmp[i][0])
+                output[i * 4 + 2] = round(tmp[i+1][1])
+                output[i * 4 + 3] = round(tmp[i+1][0])
                 }
 
         }

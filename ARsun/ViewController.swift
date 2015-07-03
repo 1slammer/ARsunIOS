@@ -9,15 +9,16 @@
 import UIKit
 import AVFoundation
 import CoreLocation
+import CoreMotion
 
 class ViewController: UIViewController , CLLocationManagerDelegate{
     
     let captureSession = AVCaptureSession()
     let f = Test_View(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - 60))
-    var g:Graph!
-
     var moonButton: UIButton!
     var sunButton: UIButton!
+    let motionManager = CMMotionManager()
+    private let queue = NSOperationQueue()
    
     // If we find a device we'll store it here for later use
     var captureDevice : AVCaptureDevice?
@@ -34,7 +35,10 @@ class ViewController: UIViewController , CLLocationManagerDelegate{
         locationManager.requestAlwaysAuthorization()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.delegate = self
+        locationManager.headingFilter = kCLHeadingFilterNone
         locationManager.startUpdatingLocation()
+        if CLLocationManager.headingAvailable() {
+            locationManager.startUpdatingHeading() }
         
         let devices = AVCaptureDevice.devices()
         // Loop through all the capture devices on this phone
@@ -50,6 +54,35 @@ class ViewController: UIViewController , CLLocationManagerDelegate{
         if captureDevice != nil {
             beginSession()
         }
+//        if motionManager.accelerometerAvailable {
+//            motionManager.accelerometerUpdateInterval = 0.01
+//            motionManager.startAccelerometerUpdatesToQueue(queue) {
+//                [weak self] (data: CMAccelerometerData!, error: NSError!) in
+//                
+//                let rotation = atan2(data.acceleration.x, data.acceleration.y) - M_PI
+//                self?.f.transform = CGAffineTransformMakeRotation(CGFloat(rotation))
+//            }
+//        }
+        
+        if motionManager.deviceMotionAvailable {
+            motionManager.deviceMotionUpdateInterval = 0.08
+            motionManager.startDeviceMotionUpdatesToQueue(queue) {
+                [weak self] (data: CMDeviceMotion!, error: NSError!) in
+                self!.f.accel = data.gravity
+                
+                dispatch_async(dispatch_get_main_queue(), { self!.f.update()})
+                
+                
+            }
+        }
+    }
+    func locationManagerShouldDisplayHeadingCalibration(manager: CLLocationManager!) -> Bool {
+        return true
+    }
+    func locationManager(manager: CLLocationManager!, didUpdateHeading newHeading: CLHeading!) {
+        let h2 = newHeading.trueHeading // will be -1 if we have no location info
+        var heading = h2*M_PI/180
+        f.azimuth = heading
     }
     func locationManager(manager: CLLocationManager!,
         didUpdateLocations locations: [AnyObject]!) {
@@ -59,7 +92,6 @@ class ViewController: UIViewController , CLLocationManagerDelegate{
         
     } else {
         locationManager.stopUpdatingLocation()
-        locationManager = nil
             }
 
     }
@@ -113,15 +145,11 @@ class ViewController: UIViewController , CLLocationManagerDelegate{
         while !dataGetter.isFinished {
             sleep(1)
                 }
-        for val in self.dataGetter.orderedVals{
-            println(val)
-        }
-        for var x = 0; x < 16; x++ {
-        f.setNeedsDisplay()
-        //self.view.setNeedsDisplay()
-            sleep(1)
-        NSRunLoop.currentRunLoop().runMode(NSDefaultRunLoopMode, beforeDate: NSDate())
-        }
+//        for val in self.dataGetter.myVals{
+//            println(val)
+//        }
+        f.g.setMap(dataGetter.myVals);
+        f.g.updateCoordinates(dataGetter.orderedVals)
     }
     
     func sunButtonAction(sender:UIButton!)
@@ -130,12 +158,21 @@ class ViewController: UIViewController , CLLocationManagerDelegate{
     }
     
     class Test_View: UIView {
+        var accel = CMAcceleration(x:0,y:0,z:0)
+        var path = UIBezierPath()
         var hasCalled = false
-        var x = 70
-        var y = 70
+        var paramsAreSet = false
+        var azimuth:Double!
+        var pitch:Double!
+        var roll:Double!
+        var g:Graph!
+        var z = 0
+        var m = 0
         
         override init(frame: CGRect) {
             super.init(frame: frame)
+            
+            g = Graph( degW: 32.13, degH: 53.13, screenHor: Int(self.bounds.width),screenVert: Int(self.bounds.height));
         }
         
         required init(coder aDecoder: NSCoder) {
@@ -143,37 +180,45 @@ class ViewController: UIViewController , CLLocationManagerDelegate{
         }
         override func drawRect(rect: CGRect) {
             super.drawRect(rect)
-            if hasCalled {
-                var path = UIBezierPath()
-                path.moveToPoint(CGPoint(x: 50, y:50))
-                path.addLineToPoint(CGPoint(x: x, y: y))
-                x = x + 20
-                y = y + 40
-                var color:UIColor = UIColor.blueColor()
-                color.set()
-                path.stroke()
-            } else {
-            let h = rect.height
-            let w = rect.width
             var color:UIColor = UIColor.blueColor()
-            
-            var drect = CGRect(x: (w * 0.25),y: (h * 0.25),width: (w * 0.5),height: (h * 0.5))
-            var bpath:UIBezierPath = UIBezierPath(rect: drect)
-            
             color.set()
-            bpath.stroke()
-                hasCalled = true
-            }
-            
-            NSLog("drawRect has updated the view")
-            
+            path.stroke()
+                
+            //NSLog("points:\(points[0]), \(points[1])" )
         }
         
+        func setParams(azIn:Double, pitchIn:Double, rollIn:Double){
+            azimuth = azIn
+            roll = rollIn
+            pitch = pitchIn
+            paramsAreSet = true
+            
+        }
+        func update() {
+            roll = accel.x * M_PI
+            pitch  = accel.y * M_PI
+            println("called")
+            if g.ready {
+                var points = g.points(pitch, azimuth: azimuth, roll: roll)
+                for cp in points {
+                    println(cp)
+                }
+                path.moveToPoint(CGPoint(x:50, y:50))
+                path.addLineToPoint(CGPoint(x:z++, y:m++))
+                //path.moveToPoint(CGPoint(x: points[0], y:points[1]))
+//                for var zp = 2; zp < points.count; zp = zp + 2 {
+//                    path.addLineToPoint(CGPoint(x: points[zp], y: points[zp + 1]))
+//                }
+
+                self.setNeedsDisplay()
+               
         
-    }
+        }
+        
+        }
     
     
-}
+    }}
 
 
 
