@@ -18,6 +18,7 @@ class NavalDataGetter : NSObject {
     var orderedVals = Array<Array<Double>>()//[[Double]]()
     var flag4 = false
     var url:String!
+    var isMoon = false
     
 
     init(bodyIn:String, location:CLLocation) {
@@ -26,8 +27,10 @@ class NavalDataGetter : NSObject {
         let lattitude = " "
         let longitude = " "
         var body,tz,mid1,mid2,firstTime,lastTime,tz_sign,lat_sign,lon_sign:String
-        if (bodyIn == "Moon") {body = "11"}
-        else if (bodyIn == "Sun") {body = "10"}
+        if (bodyIn == "Moon") {body = "11"
+        isMoon = true}
+        else if (bodyIn == "Sun") {body = "10"
+        isMoon = false}
         else {body = "10"}
         if (location.coordinate.latitude  < 0){
             lat_sign = "-1"
@@ -129,10 +132,18 @@ class NavalDataGetter : NSObject {
                         var doubleValue : Double = NSString(string: val).doubleValue
                         myDubs.append(doubleValue)
                         self.orderedVals[y][1] = (val as NSString).doubleValue
+                        if !self.isMoon {
                         x = -1
+                        }
+                        else if self.isMoon {
+                            
+                        }
                         self.myVals[key] = myDubs
                         myDubs = [Double]()
                         y++
+                    }
+                    else if x == 3{
+                        x = -1
                     }
                     x++
                     

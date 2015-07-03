@@ -13,7 +13,8 @@ import CoreLocation
 class ViewController: UIViewController , CLLocationManagerDelegate{
     
     let captureSession = AVCaptureSession()
-    let f = Test_View(frame: CGRectMake(0, 250, 110, 110))
+    let f = Test_View(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - 60))
+    var g:Graph!
 
     var moonButton: UIButton!
     var sunButton: UIButton!
@@ -112,10 +113,10 @@ class ViewController: UIViewController , CLLocationManagerDelegate{
         while !dataGetter.isFinished {
             sleep(1)
                 }
-        for val in self.dataGetter.myVals{
+        for val in self.dataGetter.orderedVals{
             println(val)
         }
-        for var x = 0; x < 5; x++ {
+        for var x = 0; x < 16; x++ {
         f.setNeedsDisplay()
         //self.view.setNeedsDisplay()
             sleep(1)
@@ -146,6 +147,8 @@ class ViewController: UIViewController , CLLocationManagerDelegate{
                 var path = UIBezierPath()
                 path.moveToPoint(CGPoint(x: 50, y:50))
                 path.addLineToPoint(CGPoint(x: x, y: y))
+                x = x + 20
+                y = y + 40
                 var color:UIColor = UIColor.blueColor()
                 color.set()
                 path.stroke()

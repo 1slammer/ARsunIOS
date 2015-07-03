@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CB33A7091B45C5A800F136F5 /* Graph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB33A7081B45C5A800F136F5 /* Graph.swift */; };
 		CBF139681B4341C3008F8901 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF139671B4341C3008F8901 /* AppDelegate.swift */; };
 		CBF1396A1B4341C3008F8901 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF139691B4341C3008F8901 /* ViewController.swift */; };
 		CBF1396D1B4341C3008F8901 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBF1396B1B4341C3008F8901 /* Main.storyboard */; };
@@ -29,6 +30,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CB33A7081B45C5A800F136F5 /* Graph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Graph.swift; sourceTree = "<group>"; };
 		CBF139621B4341C3008F8901 /* ARsun.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARsun.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBF139661B4341C3008F8901 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CBF139671B4341C3008F8901 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 			children = (
 				CBF139671B4341C3008F8901 /* AppDelegate.swift */,
 				CBF139691B4341C3008F8901 /* ViewController.swift */,
+				CB33A7081B45C5A800F136F5 /* Graph.swift */,
 				CBF139891B4378D1008F8901 /* NavalDataGetter.swift */,
 				CBF139871B434C51008F8901 /* DrawingView.swift */,
 				CBF1396B1B4341C3008F8901 /* Main.storyboard */,
@@ -227,6 +230,7 @@
 				CBF1396A1B4341C3008F8901 /* ViewController.swift in Sources */,
 				CBF139681B4341C3008F8901 /* AppDelegate.swift in Sources */,
 				CBF1398A1B4378D1008F8901 /* NavalDataGetter.swift in Sources */,
+				CB33A7091B45C5A800F136F5 /* Graph.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
