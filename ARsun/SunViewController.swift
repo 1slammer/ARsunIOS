@@ -12,8 +12,12 @@ import CoreLocation
 import CoreMotion
 
 class SunViewController: UIViewController, CLLocationManagerDelegate {
-    
-    private let updateInterval = 1.0/60.0
+    private let fps24 = 1.0/24.0;
+    private let fps30 = 1.0/30.0;
+    private let fps60 = 1.0/60.0;
+    let sunView = SunView(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - 60))
+    private let hz1 = 1.0;
+    private var updateInterval: Double!
     private let motionManager = CMMotionManager()
     private let queue = NSOperationQueue()
     let captureSession = AVCaptureSession()
@@ -25,7 +29,6 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
     var hasUpdated = false
     var location: CLLocation!
     var dataGetter:NavalDataGetter!
-    var sunView:SunView!
     var g:Graph!
     
 
@@ -34,7 +37,8 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.sunView = self.view as! SunView
+        updateInterval = fps24
+        //self.sunView = self.view as! SunView
         captureSession.sessionPreset = AVCaptureSessionPresetHigh
         locationManager.requestAlwaysAuthorization()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -125,6 +129,9 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
         sunButton.addTarget(self, action: "sunButtonAction:", forControlEvents: UIControlEvents.TouchUpInside)
         
         self.view.addSubview(sunButton)
+        self.view.addSubview(sunView)
+        sunView.backgroundColor = UIColor.clearColor()
+        self.view.bringSubviewToFront(sunView)
         
         
     }

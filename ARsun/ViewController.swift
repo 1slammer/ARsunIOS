@@ -183,6 +183,7 @@ class ViewController: UIViewController , CLLocationManagerDelegate{
             var color:UIColor = UIColor.blueColor()
             color.set()
             path.stroke()
+            println("called2")
                 
             //NSLog("points:\(points[0]), \(points[1])" )
         }
@@ -211,11 +212,11 @@ class ViewController: UIViewController , CLLocationManagerDelegate{
 //                }
                 
                 
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.setNeedsDisplay()
-                    });
+//                dispatch_async(dispatch_get_main_queue(), {
+//                    self.setNeedsDisplay()
+//                    });
 
-                //self.setNeedsDisplay()
+                self.setNeedsDisplay()
                
         
         }

@@ -17,6 +17,8 @@ extension Double {
 }
 
 
+
+
 class Graph : NSObject {
     
     var scrH: Int = 0
@@ -66,6 +68,10 @@ class Graph : NSObject {
     
     func upDateCoordinates(coorIn: [[Double]]!){
         spCoor = coorIn
+        for (var i = 0; i < spCoor.count; i++){
+            spCoor[i][0] = spCoor[i][0].degreesToRadians
+            spCoor[i][1] = spCoor[i][1].degreesToRadians
+        }
         ready = true
     }
     
@@ -139,35 +145,38 @@ class Graph : NSObject {
     func points(pitch:Double, azimuth:Double, roll:Double) -> [Double] {
         var output:[Double]!
         if(ready){
-            println(azimuth)
+            //println(azimuth)
             var azimuth1 = normalize((azimuth - M_PI) * (180/M_PI)).degreesToRadians
-            println(azimuth1)
-            output = [Double](count:(spCoor.count - 1) * 4, repeatedValue: 0.0)
+            //println(azimuth1)
+            
+            output = [Double](count:(spCoor.count*2), repeatedValue: 0.0)
             var tmp = Array(count:spCoor.count, repeatedValue:[Double](count:2, repeatedValue:0.0))
             
             for var i = 0; i < spCoor.count; i++ {
                 //degrees from phone pointing vector
-                tmp[i][0] = (spCoor[i][0].degreesToRadians) - pitch;
-                tmp[i][1] = (spCoor[i][1].degreesToRadians) - azimuth1;
+                
+                tmp[i][0] = (spCoor[i][0]) - pitch
+                tmp[i][1] = (spCoor[i][1]) - azimuth1
                 //pixels per degree from pointing vector
                 tmp[i][0] = tmp[i][0] * pdh;
+                //println(spCoor[i][0]*M_PI/180)
                 tmp[i][1] = tmp[i][1] * pdw;
                 //roll correction using expanded rotation matrix
                 //roll +=
                 //tmp[i][0] = Math.sin(roll) * tmp[i][1] + Math.cos(roll) * tmp[i][0]; //vertical component
                 //tmp[i][1] = Math.cos(roll) * tmp[i][1] - Math.sin(roll) * tmp[i][0]; //horixontal component
                 //correct coordinates to screen coordinates (0,0) top left and Y axis is inverted
-                tmp[i][0] = Double(centerH) - tmp[i][0];
+                tmp[i][0] = Double(centerH) - tmp[i][0]
                 tmp[i][1] += Double(centerW)
                 
                 i++;
             }
-            for (var i = 0; i < tmp.count-1; i++) {
+            for (var i = 0; i < tmp.count; i++) {
                 //if (i != tmp.length-1) {
-                output[i * 4] = round(tmp[i][1])
-                output[i * 4 + 1] = round(tmp[i][0])
-                output[i * 4 + 2] = round(tmp[i+1][1])
-                output[i * 4 + 3] = round(tmp[i+1][0])
+                output[i*2] = round(tmp[i][1])
+                output[i*2 + 1] = round(tmp[i][0])
+                //output[i * 4 + 2] = round(tmp[i+1][1])
+                //output[i * 4 + 3] = round(tmp[i+1][0])
                 }
 
         }
