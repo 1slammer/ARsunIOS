@@ -10,51 +10,35 @@ import UIKit
 import CoreMotion
 
 class SunView: UIView {
-    var acceleration = CMAcceleration(x: 0, y: 0, z: 0)
-    private let image = UIImage(named : "ball")!
-    private var currentPoint : CGPoint = CGPointZero {
-        didSet {
-            var newX = currentPoint.x
-            var newY = currentPoint.y
-            if newX < 0 {
-                newX = 0
-                ballXVelocity = 0
-            } else if newX > bounds.size.width - image.size.width {
-                newX = bounds.size.width - image.size.width
-                ballXVelocity = 0
-            }
-            if newY < 0 {
-                newY = 0
-                ballYVelocity = 0
-            } else if newY > bounds.size.height - image.size.height {
-                newY = bounds.size.height - image.size.height
-                ballYVelocity = 0
-            }
-            currentPoint = CGPointMake(newX, newY)
-            
-            let currentRect = CGRectMake(newX, newY,
-                newX + image.size.width,
-                newY + image.size.height)
-            let prevRect = CGRectMake(oldValue.x, oldValue.y,
-                oldValue.x + image.size.width,
-                oldValue.y + image.size.height)
-            setNeedsDisplayInRect(CGRectUnion(currentRect, prevRect))
-        }
-    }
-    private var ballXVelocity = 0.0
-    private var ballYVelocity = 0.0
-    private var lastUpdateTime = NSDate()
-    
+    var accel = CMAcceleration(x: 0, y: 0, z: 0)
+    var azimuth:Double!
+    var pitch:Double!
+    var roll:Double!
+    var g:Graph!
+    var z = 0
+    var m = 0
+    var heading:Double!
+
+    var path = UIBezierPath()
     func update() -> Void {
-        let now = NSDate()
-        let secondsSinceLastDraw = now.timeIntervalSinceDate(lastUpdateTime)
-        ballXVelocity = ballXVelocity + (acceleration.x * secondsSinceLastDraw)
-        ballYVelocity = ballYVelocity - (acceleration.y * secondsSinceLastDraw)
-        
-        let xDelta = secondsSinceLastDraw * ballXVelocity * 500
-        let yDelta = secondsSinceLastDraw * ballYVelocity * 500
-        currentPoint = CGPointMake(currentPoint.x + CGFloat(xDelta), currentPoint.y + CGFloat(yDelta))
-        lastUpdateTime = now
+        roll = accel.x * M_PI
+        pitch  = accel.y * M_PI
+        if g.ready {
+            var points = g.points(pitch, azimuth: heading, roll: roll)
+//            for cp in points {
+//                println(cp)
+//            }
+            path.moveToPoint(CGPoint(x:50, y:50))
+            path.addLineToPoint(CGPoint(x:z++, y:m++))
+            //path.moveToPoint(CGPoint(x: points[0], y:points[1]))
+            //                for var zp = 2; zp < points.count; zp = zp + 2 {
+            //                    path.addLineToPoint(CGPoint(x: points[zp], y: points[zp + 1]))
+            //                }
+            println("called")
+            self.setNeedsDisplay()
+            
+
+        }
     }
     
     override init(frame: CGRect) {
@@ -68,15 +52,16 @@ class SunView: UIView {
     }
     
     func commonInit() -> Void {
-        currentPoint = CGPointMake((bounds.size.width / 2.0) +
-            (image.size.width / 2.0),
-            (bounds.size.height / 2.0) +
-                (image.size.height / 2.0))
+        g = Graph( degW: 32.13, degH: 53.13, screenHor: Int(self.bounds.width),screenVert: Int(self.bounds.height))
     }
     
     override func drawRect(rect: CGRect) {
         // Drawing code
-        image.drawAtPoint(currentPoint)
+        var color:UIColor = UIColor.blueColor()
+        println("called2")
+        color.set()
+        path.stroke()
+
     }
 }
 

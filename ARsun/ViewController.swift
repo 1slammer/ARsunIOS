@@ -209,8 +209,13 @@ class ViewController: UIViewController , CLLocationManagerDelegate{
 //                for var zp = 2; zp < points.count; zp = zp + 2 {
 //                    path.addLineToPoint(CGPoint(x: points[zp], y: points[zp + 1]))
 //                }
+                
+                
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.setNeedsDisplay()
+                    });
 
-                self.setNeedsDisplay()
+                //self.setNeedsDisplay()
                
         
         }
