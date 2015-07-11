@@ -9,6 +9,8 @@
 import Foundation
 import CoreLocation
 
+
+
 class NavalDataGetter : NSObject {
     
     var longVals = [Int]()
@@ -126,12 +128,12 @@ class NavalDataGetter : NSObject {
                         var doubleValue : Double = NSString(string: val).doubleValue
                         myDubs.append(doubleValue)
                         self.orderedVals.append(Array(count: 2, repeatedValue: 1))
-                        self.orderedVals[y][0] = (val as NSString).doubleValue
+                        self.orderedVals[y][0] = (val as NSString).doubleValue.degreesToRadians
                     }
                     else if x == 2 {
                         var doubleValue : Double = NSString(string: val).doubleValue
-                        myDubs.append(doubleValue)
-                        self.orderedVals[y][1] = (val as NSString).doubleValue
+                        myDubs.append(doubleValue.degreesToRadians)
+                        self.orderedVals[y][1] = (val as NSString).doubleValue.degreesToRadians 
                         if !self.isMoon {
                         x = -1
                         }

@@ -69,7 +69,7 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
             (motionData: CMDeviceMotion!, error: NSError!) -> Void in
             self.sunView.accel = motionData.gravity
             self.g = self.sunView.g
-            dispatch_async(dispatch_get_main_queue(), {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 self.sunView.update()
             })
         })

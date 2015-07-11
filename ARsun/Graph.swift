@@ -132,12 +132,16 @@ class Graph : NSObject {
     }
     
     func horizon(angle:Double, width:Double, pitch:Double, azimuth:Double, roll:Double) -> [Float] {
+        
         var output:[Float] = [0.0, 0.0, 0.0, 0.0]
-        var center:Double = angle.degreesToRadians - pitch
+        
+        var center:Double = angle.degreesToRadians - pitch - M_PI // correction for frame of reference off by 90 deg
+        //println(pitch)
+        center = center * pdh
         center = Double(centerH) - center
         output[0] = Float(centerW) - Float(width/2.0)
         output[1] = Float(center)
-        output[2] = Float(centerW) - Float(width/2.0)
+        output[2] = Float(centerW) + Float(width/2.0)
         output[3] = Float(center)
         return output
     }
@@ -149,32 +153,36 @@ class Graph : NSObject {
             var azimuth1 = normalize((azimuth - M_PI) * (180/M_PI)).degreesToRadians
             //println(azimuth1)
             
-            output = [Double](count:(spCoor.count*2), repeatedValue: 0.0)
-            var tmp = Array(count:spCoor.count, repeatedValue:[Double](count:2, repeatedValue:0.0))
             
+            var tmp = Array(count:spCoor.count, repeatedValue:[Double](count:2, repeatedValue:0.0))
+            output = [Double](count:(spCoor.count*2), repeatedValue: 0.0)
             for var i = 0; i < spCoor.count; i++ {
                 //degrees from phone pointing vector
-                
+                //println("tmp_start: (\(tmp[i][0]),\(tmp[i][1]))]")
+                //println("spcoor: (\(spCoor[i][0]),\(spCoor[i][1]))]")
                 tmp[i][0] = (spCoor[i][0]) - pitch
                 tmp[i][1] = (spCoor[i][1]) - azimuth1
+                //println("tmp_from_ptvector: (\(tmp[i][0]),\(tmp[i][1]))]")
                 //pixels per degree from pointing vector
                 tmp[i][0] = tmp[i][0] * pdh;
                 //println(spCoor[i][0]*M_PI/180)
                 tmp[i][1] = tmp[i][1] * pdw;
+                //println("tmp_pixels: (\(tmp[i][0]),\(tmp[i][1]))]")
                 //roll correction using expanded rotation matrix
                 //roll +=
                 //tmp[i][0] = Math.sin(roll) * tmp[i][1] + Math.cos(roll) * tmp[i][0]; //vertical component
                 //tmp[i][1] = Math.cos(roll) * tmp[i][1] - Math.sin(roll) * tmp[i][0]; //horixontal component
                 //correct coordinates to screen coordinates (0,0) top left and Y axis is inverted
                 tmp[i][0] = Double(centerH) - tmp[i][0]
-                tmp[i][1] += Double(centerW)
-                
-                i++;
+                tmp[i][1] = Double(centerW) - tmp[i][1]
+                //println("pix_screen_centered: (\(tmp[i][0]),\(tmp[i][1]))]")
             }
-            for (var i = 0; i < tmp.count; i++) {
+            for (var z = 0; z < tmp.count; z++) {
                 //if (i != tmp.length-1) {
-                output[i*2] = round(tmp[i][1])
-                output[i*2 + 1] = round(tmp[i][0])
+                output[z*2] = round(tmp[z][1])
+                //println("temp \(z): (\(tmp[z][1]),\(tmp[z][0]))]")
+                output[z*2 + 1] = round(tmp[z][0])
+                //println("output \(z): (\(output[z*2]),\(output[z*2+1]))]")
                 //output[i * 4 + 2] = round(tmp[i+1][1])
                 //output[i * 4 + 3] = round(tmp[i+1][0])
                 }

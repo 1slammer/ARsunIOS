@@ -11,20 +11,25 @@ import CoreMotion
 
 class SunView: UIView {
     var accel = CMAcceleration(x: 0, y: 0, z: 0)
-    var azimuth:Double!
     var pitch:Double!
     var roll:Double!
     var g:Graph!
     var z = 60
     var m = 60
-    var path = UIBezierPath()
+    var hor: [Float]!
     var heading:Double!
     var hasbeen:Bool!
+    var points:[Double]!
     func update() -> Void {
+        //println("(X,Y)\t(\(accel.x),\(accel.y)")
+        var x = -accel.x
+        var y = accel.y
+        var angle = atan2(x, y);
+        println("angle: \(angle)")
         roll = accel.x * M_PI
         pitch  = accel.y * M_PI
         if g.ready {
-            var points = g.points(pitch, azimuth: heading, roll: roll)
+            points = g.points(pitch, azimuth: heading, roll: roll)
             //for cp in points {
             //    println(cp)
             //}
@@ -32,14 +37,15 @@ class SunView: UIView {
 //            path.addLineToPoint(CGPoint(x:z++, y:m++))
 //            println("points:\(z), \(m)" )
 //
-            //path.moveToPoint(CGPoint(x: points[0], y:points[1]))
-            //                for var zp = 2; zp < points.count; zp = zp + 2 {
-            //                    path.addLineToPoint(CGPoint(x: points[zp], y: points[zp + 1]))
-            //                }
+//            path.moveToPoint(CGPoint(x: points[0], y:points[1]))
+//                            for var zp = 2; zp < points.count; zp = zp + 2 {
+//                                path.addLineToPoint(CGPoint(x: points[zp], y: points[zp + 1]))
+//                            }
+            hor = g.horizon(0.0, width:  Double(self.frame.width), pitch: pitch, azimuth: heading, roll: roll)
             println("called")
-            self.setNeedsDisplayInRect(self.frame)
             
-
+            dispatch_async(dispatch_get_main_queue(), { self.setNeedsDisplayInRect(self.frame)});
+    
         }
     }
     
@@ -60,14 +66,25 @@ class SunView: UIView {
     
     override func drawRect(rect: CGRect) {
         // Drawing code
-        
+        var path = UIBezierPath()
         var color:UIColor = UIColor.blueColor()
-        println(z)
         color.set()
-        path.moveToPoint(CGPoint(x:50, y:50))
-        path.addLineToPoint(CGPoint(x:++z, y:++m))
-        
+//        path.moveToPoint(CGPoint(x:50, y:50))
+//        path.addLineToPoint(CGPoint(x:++z, y:++m))
+//        if (points != nil){
+//        path.moveToPoint(CGPoint(x: points[0], y:points[1]))
+//        for var zp = 2; zp < points.count; zp = zp + 2 {
+//            path.addLineToPoint(CGPoint(x: points[zp], y: points[zp + 1]))
+////            path.moveToPoint(CGPoint(x:points[zp],y: points[zp+1]))
+//            println("(\(points[zp]),\(points[zp+1]))")
+//        }
+        //}
+        if hor != nil{
+            println("called2")
+        path.moveToPoint(CGPoint(x: Double(hor[0]), y: Double(hor[1])))
+            path.addLineToPoint(CGPoint(x: Double(hor[2]), y: Double(hor[3])))
          path.stroke()
+        }
 
     }
 }
