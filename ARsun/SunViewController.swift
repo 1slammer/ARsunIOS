@@ -38,7 +38,6 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         updateInterval = fps24
-        //self.sunView = self.view as! SunView
         captureSession.sessionPreset = AVCaptureSessionPresetHigh
         locationManager.requestAlwaysAuthorization()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -69,6 +68,8 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
             (motionData: CMDeviceMotion!, error: NSError!) -> Void in
             self.sunView.accel = motionData.gravity
             self.g = self.sunView.g
+            // We want to do most of the cpu intense data processing on the background thread so
+            // we don't keep the view from redrawing.
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 self.sunView.update()
             })
@@ -141,9 +142,6 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
         while !dataGetter.isFinished {
             sleep(1)
         }
-        //        for val in self.dataGetter.myVals{
-        //            println(val)
-        //        }
         g.setMap(dataGetter.myVals);
         g.updateCoordinates(dataGetter.orderedVals)
     }
@@ -154,9 +152,6 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
         while !dataGetter.isFinished {
             sleep(1)
         }
-        //        for val in self.dataGetter.myVals{
-        //            println(val)
-        //        }
         g.setMap(dataGetter.myVals);
         g.updateCoordinates(dataGetter.orderedVals)
 

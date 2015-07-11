@@ -9,14 +9,13 @@
 /* Begin PBXBuildFile section */
 		CB33A7091B45C5A800F136F5 /* Graph.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB33A7081B45C5A800F136F5 /* Graph.swift */; };
 		CB33A70B1B47351F00F136F5 /* SunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB33A70A1B47351F00F136F5 /* SunView.swift */; };
+		CB4A477D1B50EB18002C733E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB4A477C1B50EB18002C733E /* Images.xcassets */; };
 		CBBF95D41B4981E300236A3A /* SunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBF95D31B4981E300236A3A /* SunViewController.swift */; };
 		CBF139681B4341C3008F8901 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF139671B4341C3008F8901 /* AppDelegate.swift */; };
 		CBF1396A1B4341C3008F8901 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF139691B4341C3008F8901 /* ViewController.swift */; };
 		CBF1396D1B4341C3008F8901 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBF1396B1B4341C3008F8901 /* Main.storyboard */; };
-		CBF1396F1B4341C3008F8901 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBF1396E1B4341C3008F8901 /* Images.xcassets */; };
 		CBF139721B4341C3008F8901 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBF139701B4341C3008F8901 /* LaunchScreen.xib */; };
 		CBF1397E1B4341C3008F8901 /* ARsunTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF1397D1B4341C3008F8901 /* ARsunTests.swift */; };
-		CBF139881B434C51008F8901 /* DrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF139871B434C51008F8901 /* DrawingView.swift */; };
 		CBF1398A1B4378D1008F8901 /* NavalDataGetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF139891B4378D1008F8901 /* NavalDataGetter.swift */; };
 		CBF1398C1B4428DB008F8901 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBF1398B1B4428DB008F8901 /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
@@ -34,18 +33,17 @@
 /* Begin PBXFileReference section */
 		CB33A7081B45C5A800F136F5 /* Graph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Graph.swift; sourceTree = "<group>"; };
 		CB33A70A1B47351F00F136F5 /* SunView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SunView.swift; sourceTree = "<group>"; };
+		CB4A477C1B50EB18002C733E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		CBBF95D31B4981E300236A3A /* SunViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SunViewController.swift; sourceTree = "<group>"; };
 		CBF139621B4341C3008F8901 /* ARsun.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARsun.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBF139661B4341C3008F8901 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CBF139671B4341C3008F8901 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CBF139691B4341C3008F8901 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		CBF1396C1B4341C3008F8901 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		CBF1396E1B4341C3008F8901 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		CBF139711B4341C3008F8901 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		CBF139771B4341C3008F8901 /* ARsunTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ARsunTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBF1397C1B4341C3008F8901 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CBF1397D1B4341C3008F8901 /* ARsunTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARsunTests.swift; sourceTree = "<group>"; };
-		CBF139871B434C51008F8901 /* DrawingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawingView.swift; sourceTree = "<group>"; };
 		CBF139891B4378D1008F8901 /* NavalDataGetter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavalDataGetter.swift; sourceTree = "<group>"; };
 		CBF1398B1B4428DB008F8901 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -92,14 +90,12 @@
 			isa = PBXGroup;
 			children = (
 				CBF139671B4341C3008F8901 /* AppDelegate.swift */,
-				CBF139691B4341C3008F8901 /* ViewController.swift */,
 				CBBF95D31B4981E300236A3A /* SunViewController.swift */,
 				CB33A70A1B47351F00F136F5 /* SunView.swift */,
 				CB33A7081B45C5A800F136F5 /* Graph.swift */,
 				CBF139891B4378D1008F8901 /* NavalDataGetter.swift */,
-				CBF139871B434C51008F8901 /* DrawingView.swift */,
+				CB4A477C1B50EB18002C733E /* Images.xcassets */,
 				CBF1396B1B4341C3008F8901 /* Main.storyboard */,
-				CBF1396E1B4341C3008F8901 /* Images.xcassets */,
 				CBF139701B4341C3008F8901 /* LaunchScreen.xib */,
 				CBF139651B4341C3008F8901 /* Supporting Files */,
 			);
@@ -109,6 +105,7 @@
 		CBF139651B4341C3008F8901 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				CBF139691B4341C3008F8901 /* ViewController.swift */,
 				CBF139661B4341C3008F8901 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -212,9 +209,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB4A477D1B50EB18002C733E /* Images.xcassets in Resources */,
 				CBF1396D1B4341C3008F8901 /* Main.storyboard in Resources */,
 				CBF139721B4341C3008F8901 /* LaunchScreen.xib in Resources */,
-				CBF1396F1B4341C3008F8901 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,7 +229,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CBF139881B434C51008F8901 /* DrawingView.swift in Sources */,
 				CBBF95D41B4981E300236A3A /* SunViewController.swift in Sources */,
 				CB33A70B1B47351F00F136F5 /* SunView.swift in Sources */,
 				CBF1396A1B4341C3008F8901 /* ViewController.swift in Sources */,
