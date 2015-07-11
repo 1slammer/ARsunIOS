@@ -20,6 +20,7 @@ class SunView: UIView {
     var heading:Double!
     var hasbeen:Bool!
     var points:[Double]!
+    private let image = UIImage(named : "moon_image")!
     func update() -> Void {
         //println("(X,Y)\t(\(accel.x),\(accel.y)")
         var x = -accel.x
@@ -84,6 +85,8 @@ class SunView: UIView {
         path.moveToPoint(CGPoint(x: Double(hor[0]), y: Double(hor[1])))
             path.addLineToPoint(CGPoint(x: Double(hor[2]), y: Double(hor[3])))
          path.stroke()
+         var currentPoint = CGPoint(x: Double(self.frame.width/2 - 30), y: Double(hor[1] - 40))
+            image.drawAtPoint(currentPoint)
         }
 
     }
