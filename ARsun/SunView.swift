@@ -68,7 +68,7 @@ class SunView: UIView {
     override func drawRect(rect: CGRect) {
         // Drawing code
         var path = UIBezierPath()
-        var color:UIColor = UIColor.blueColor()
+        var color:UIColor = UIColor.lightGrayColor()
         color.set()
 //        path.moveToPoint(CGPoint(x:50, y:50))
 //        path.addLineToPoint(CGPoint(x:++z, y:++m))
@@ -82,6 +82,7 @@ class SunView: UIView {
         //}
         if hor != nil{
             println("called2")
+            path.lineWidth = 5.0
         path.moveToPoint(CGPoint(x: Double(hor[0]), y: Double(hor[1])))
             path.addLineToPoint(CGPoint(x: Double(hor[2]), y: Double(hor[3])))
          path.stroke()

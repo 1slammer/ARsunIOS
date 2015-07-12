@@ -30,6 +30,8 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
     var location: CLLocation!
     var dataGetter:NavalDataGetter!
     var g:Graph!
+    private let moon_button_background = UIImage(named : "moon_button_image") as UIImage?
+    private let sun_button_background = UIImage(named : "sun_button_image") as UIImage?
     
 
     
@@ -44,6 +46,7 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
         locationManager.delegate = self
         locationManager.headingFilter = kCLHeadingFilterNone
         locationManager.startUpdatingLocation()
+        
         if CLLocationManager.headingAvailable() {
             locationManager.startUpdatingHeading() }
         
@@ -116,24 +119,25 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
         self.view.layer.addSublayer(previewLayer)
         previewLayer?.frame = self.view.layer.frame
         captureSession.startRunning()
-        moonButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
-        moonButton.frame = CGRectMake(180, 500, 100, 50)
-        moonButton.backgroundColor = UIColor.blueColor()
+        moonButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
+        moonButton.frame = CGRectMake(180, 475, 100, 75)
+        moonButton.layer.borderColor=UIColor.darkGrayColor().CGColor
+        moonButton.setImage(moon_button_background, forState: .Normal)
+        moonButton.layer.borderWidth=2.0
         moonButton.setTitle("Moon Button", forState: UIControlState.Normal)
         moonButton.addTarget(self, action: "moonButtonAction:", forControlEvents: UIControlEvents.TouchUpInside)
-        
         self.view.addSubview(moonButton)
-        sunButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
-        sunButton.frame = CGRectMake(35, 500, 100, 50)
-        sunButton.backgroundColor = UIColor.blueColor()
+        sunButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
+        sunButton.frame = CGRectMake(35, 475, 100, 75)
+        sunButton.layer.borderColor=UIColor.orangeColor().CGColor
+        sunButton.setImage(sun_button_background, forState: .Normal)
+        sunButton.layer.borderWidth=1.5
         sunButton.setTitle("Sun Button", forState: UIControlState.Normal)
         sunButton.addTarget(self, action: "sunButtonAction:", forControlEvents: UIControlEvents.TouchUpInside)
-        
         self.view.addSubview(sunButton)
         self.view.addSubview(sunView)
         sunView.backgroundColor = UIColor.clearColor()
-        self.view.bringSubviewToFront(sunView)
-        
+        self.view.bringSubviewToFront(sunView)        
         
     }
     func moonButtonAction(sender:UIButton!)
