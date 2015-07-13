@@ -30,6 +30,8 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
     var location: CLLocation!
     var dataGetter:NavalDataGetter!
     var g:Graph!
+    private let moon_button_background = UIImage(named : "moon_button_image") as UIImage?
+    private let sun_button_background = UIImage(named : "sun_button_image") as UIImage?
     
 
     
@@ -38,13 +40,13 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         updateInterval = fps24
-        //self.sunView = self.view as! SunView
         captureSession.sessionPreset = AVCaptureSessionPresetHigh
         locationManager.requestAlwaysAuthorization()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.delegate = self
         locationManager.headingFilter = kCLHeadingFilterNone
         locationManager.startUpdatingLocation()
+        
         if CLLocationManager.headingAvailable() {
             locationManager.startUpdatingHeading() }
         
@@ -69,6 +71,8 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
             (motionData: CMDeviceMotion!, error: NSError!) -> Void in
             self.sunView.accel = motionData.gravity
             self.g = self.sunView.g
+            // We want to do most of the cpu intense data processing on the background thread so
+            // we don't keep the view from redrawing.
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 self.sunView.update()
             })
@@ -115,24 +119,25 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
         self.view.layer.addSublayer(previewLayer)
         previewLayer?.frame = self.view.layer.frame
         captureSession.startRunning()
-        moonButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
-        moonButton.frame = CGRectMake(180, 500, 100, 50)
-        moonButton.backgroundColor = UIColor.blueColor()
+        moonButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
+        moonButton.frame = CGRectMake(180, 475, 100, 75)
+        moonButton.layer.borderColor=UIColor.darkGrayColor().CGColor
+        moonButton.setImage(moon_button_background, forState: .Normal)
+        moonButton.layer.borderWidth=2.0
         moonButton.setTitle("Moon Button", forState: UIControlState.Normal)
         moonButton.addTarget(self, action: "moonButtonAction:", forControlEvents: UIControlEvents.TouchUpInside)
-        
         self.view.addSubview(moonButton)
-        sunButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
-        sunButton.frame = CGRectMake(35, 500, 100, 50)
-        sunButton.backgroundColor = UIColor.blueColor()
+        sunButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
+        sunButton.frame = CGRectMake(35, 475, 100, 75)
+        sunButton.layer.borderColor=UIColor.orangeColor().CGColor
+        sunButton.setImage(sun_button_background, forState: .Normal)
+        sunButton.layer.borderWidth=1.5
         sunButton.setTitle("Sun Button", forState: UIControlState.Normal)
         sunButton.addTarget(self, action: "sunButtonAction:", forControlEvents: UIControlEvents.TouchUpInside)
-        
         self.view.addSubview(sunButton)
         self.view.addSubview(sunView)
         sunView.backgroundColor = UIColor.clearColor()
-        self.view.bringSubviewToFront(sunView)
-        
+        self.view.bringSubviewToFront(sunView)        
         
     }
     func moonButtonAction(sender:UIButton!)
@@ -141,9 +146,6 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
         while !dataGetter.isFinished {
             sleep(1)
         }
-        //        for val in self.dataGetter.myVals{
-        //            println(val)
-        //        }
         g.setMap(dataGetter.myVals);
         g.updateCoordinates(dataGetter.orderedVals)
     }
@@ -154,9 +156,6 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
         while !dataGetter.isFinished {
             sleep(1)
         }
-        //        for val in self.dataGetter.myVals{
-        //            println(val)
-        //        }
         g.setMap(dataGetter.myVals);
         g.updateCoordinates(dataGetter.orderedVals)
 
