@@ -26,23 +26,23 @@ class SunView: UIView {
         //println(x)
         var y = accel.y
         var z = accel.z
-        var angle = atan2(x, y);
+        var rangle = atan2(x, y);
         var pangle = atan2(y, z)
-        angle = angle*180/M_PI
-        angle = angle - 180
-        if(angle < 0){
-            angle = angle + 360
-        }
+        println("here1\(pangle)")
+        rangle = rangle*180/M_PI
         pangle = pangle*180/M_PI
+        //pangle = pangle - 180
+        if(rangle < 0){
+            rangle = rangle + 360
+        }
+        
         pangle = pangle + 90
         if(pangle < 0){
             pangle = pangle + 360
         }
-        
-        roll = accel.x * M_PI
-        pitch  = accel.y * M_PI
+        println("here\(pangle)")
         if g.ready {
-            points = g.points(pitch, azimuth: heading, roll: roll)
+            points = g.points(pangle*M_PI/180, azimuth: heading*M_PI/180, roll: rangle*M_PI/180)
             //for cp in points {
             //    println(cp)
             //}
@@ -50,13 +50,12 @@ class SunView: UIView {
 //            path.addLineToPoint(CGPoint(x:z++, y:m++))
 //            println("points:\(z), \(m)" )
 //
+//            var path = UIBezierPath()
 //            path.moveToPoint(CGPoint(x: points[0], y:points[1]))
 //                            for var zp = 2; zp < points.count; zp = zp + 2 {
 //                                path.addLineToPoint(CGPoint(x: points[zp], y: points[zp + 1]))
 //                            }
-            hor = g.horizon(0.0, width:  Double(self.frame.width), pitch: pangle*M_PI/180, azimuth: heading, roll: roll)
-            println("called")
-            
+            hor = g.horizon(0.0, width:  Double(self.frame.width), pitch: pangle*M_PI/180, azimuth: heading, roll: rangle)
             dispatch_async(dispatch_get_main_queue(), { self.setNeedsDisplayInRect(self.frame)});
     
         }
@@ -93,7 +92,6 @@ class SunView: UIView {
 //        }
         //}
         if hor != nil{
-            println("called2")
             path.lineWidth = 5.0
         path.moveToPoint(CGPoint(x: Double(hor[0]), y: Double(hor[1])))
             path.addLineToPoint(CGPoint(x: Double(hor[2]), y: Double(hor[3])))

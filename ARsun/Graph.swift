@@ -142,10 +142,10 @@ class Graph : NSObject {
         else {
         center = -pitch
         }
-        println("angle \(pitch*180/M_PI)")
+        //println("angle \(pitch*180/M_PI)")
         center = center * pdh
         center = Double(centerH) - center
-        println(center)
+        //println(center)
         output[0] = Float(centerW) - Float(width/2.0)
         output[1] = Float(center)
         output[2] = Float(centerW) + Float(width/2.0)
@@ -156,7 +156,7 @@ class Graph : NSObject {
     func points(pitch:Double, azimuth:Double, roll:Double) -> [Double] {
         var output:[Double]!
         if(ready){
-            //println(pitch)
+            println("pitch: \(pitch*180/M_PI)")
             var azimuth1 = normalize((azimuth - M_PI) * (180/M_PI)).degreesToRadians
             //println(roll)
             
@@ -189,6 +189,9 @@ class Graph : NSObject {
                 output[z*2] = round(tmp[z][1])
                 //println("temp \(z): (\(tmp[z][1]),\(tmp[z][0]))]")
                 output[z*2 + 1] = round(tmp[z][0])
+                if (z%10==0){
+                    //println("(x,y): (\(output[z*2]),\(output[z*2+1]))")
+                }
                 //println("output \(z): (\(output[z*2]),\(output[z*2+1]))]")
                 //output[i * 4 + 2] = round(tmp[i+1][1])
                 //output[i * 4 + 3] = round(tmp[i+1][0])
