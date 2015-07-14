@@ -28,7 +28,7 @@ class SunView: UIView {
         var z = accel.z
         var rangle = atan2(x, y);
         var pangle = atan2(y, z)
-        println("here1\(pangle)")
+        //println("here1\(pangle)")
         rangle = rangle*180/M_PI
         pangle = pangle*180/M_PI
         //pangle = pangle - 180
@@ -40,7 +40,10 @@ class SunView: UIView {
         if(pangle < 0){
             pangle = pangle + 360
         }
-        println("here\(pangle)")
+        if pangle > 180 {
+            pangle = pangle - 360
+        }
+        //println("here\(pangle)")
         if g.ready {
             points = g.points(pangle*M_PI/180, azimuth: heading*M_PI/180, roll: rangle*M_PI/180)
             //for cp in points {
@@ -49,13 +52,10 @@ class SunView: UIView {
 //            path.moveToPoint(CGPoint(x:50, y:50))
 //            path.addLineToPoint(CGPoint(x:z++, y:m++))
 //            println("points:\(z), \(m)" )
-//
-//            var path = UIBezierPath()
-//            path.moveToPoint(CGPoint(x: points[0], y:points[1]))
-//                            for var zp = 2; zp < points.count; zp = zp + 2 {
-//                                path.addLineToPoint(CGPoint(x: points[zp], y: points[zp + 1]))
-//                            }
-            hor = g.horizon(0.0, width:  Double(self.frame.width), pitch: pangle*M_PI/180, azimuth: heading, roll: rangle)
+            
+            
+
+                        hor = g.horizon(0.0, width:  Double(self.frame.width), pitch: pangle*M_PI/180, azimuth: heading, roll: rangle)
             dispatch_async(dispatch_get_main_queue(), { self.setNeedsDisplayInRect(self.frame)});
     
         }
@@ -91,11 +91,20 @@ class SunView: UIView {
 //            println("(\(points[zp]),\(points[zp+1]))")
 //        }
         //}
-        if hor != nil{
+        if hor != nil && points != nil{
             path.lineWidth = 5.0
         path.moveToPoint(CGPoint(x: Double(hor[0]), y: Double(hor[1])))
             path.addLineToPoint(CGPoint(x: Double(hor[2]), y: Double(hor[3])))
          path.stroke()
+            var bodypath = UIBezierPath()
+            bodypath.moveToPoint(CGPoint(x: points[0], y:points[1]))
+            for var zp = 2; zp < points.count; zp = zp + 2 {
+                path.addLineToPoint(CGPoint(x: points[zp], y: points[zp + 1]))
+                if (zp % 10 == 0){
+                    println("(x,y) \(points[zp]),\(points[zp])")
+                }
+            }
+            bodypath.stroke()
          var currentPoint = CGPoint(x: Double(self.frame.width/2 - 30), y: Double(hor[1] - 40))
             image.drawAtPoint(currentPoint)
         }

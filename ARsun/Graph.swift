@@ -136,12 +136,8 @@ class Graph : NSObject {
         var output:[Float] = [0.0, 0.0, 0.0, 0.0]
         
         var center: Double!
-        if (pitch > M_PI){
-            center = 2*M_PI - pitch
-        }
-        else {
         center = -pitch
-        }
+        
         //println("angle \(pitch*180/M_PI)")
         center = center * pdh
         center = Double(centerH) - center
@@ -156,9 +152,10 @@ class Graph : NSObject {
     func points(pitch:Double, azimuth:Double, roll:Double) -> [Double] {
         var output:[Double]!
         if(ready){
-            println("pitch: \(pitch*180/M_PI)")
-            var azimuth1 = normalize((azimuth - M_PI) * (180/M_PI)).degreesToRadians
-            //println(roll)
+            //println("pitch: \(pitch*180/M_PI)")
+            //var azimuth1 = normalize((azimuth - M_PI) * (180/M_PI)).degreesToRadians
+            var azimuth1 = azimuth.degreesToRadians
+            //println("azimuth: \(azimuth1)")
             
             
             var tmp = Array(count:spCoor.count, repeatedValue:[Double](count:2, repeatedValue:0.0))
@@ -169,7 +166,11 @@ class Graph : NSObject {
                 //println("spcoor: (\(spCoor[i][0]),\(spCoor[i][1]))]")
                 tmp[i][0] = (spCoor[i][0]) - pitch
                 tmp[i][1] = (spCoor[i][1]) - azimuth1
+                if(i % 150 == 0){
+                //println("sp_coor: (\(spCoor[i][0]),\(spCoor[i][1]))]")
+                //    println("sp_coor_deg: (\(spCoor[i][0]*180/M_PI),\(spCoor[i][1]*180/M_PI))]")
                 //println("tmp_from_ptvector: (\(tmp[i][0]),\(tmp[i][1]))]")
+                }
                 //pixels per degree from pointing vector
                 tmp[i][0] = tmp[i][0] * pdh;
                 //println(spCoor[i][0]*M_PI/180)
