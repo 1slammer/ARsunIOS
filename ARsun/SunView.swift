@@ -39,6 +39,7 @@ class SunView: UIView {
             pangle = pangle + 360
         }
         
+        
         //println(y)
         //println("pangle: \(pangle)")
         //println("angle is \(angle)")
@@ -52,11 +53,11 @@ class SunView: UIView {
 //            path.moveToPoint(CGPoint(x:50, y:50))
 //            path.addLineToPoint(CGPoint(x:z++, y:m++))
 //            println("points:\(z), \(m)" )
-//
-//            path.moveToPoint(CGPoint(x: points[0], y:points[1]))
-//                            for var zp = 2; zp < points.count; zp = zp + 2 {
-//                                path.addLineToPoint(CGPoint(x: points[zp], y: points[zp + 1]))
-//                            }
+            var path = UIBezierPath()
+            path.moveToPoint(CGPoint(x: points[0], y:points[1]))
+                            for var zp = 2; zp < points.count; zp = zp + 2 {
+                                path.addLineToPoint(CGPoint(x: points[zp], y: points[zp + 1]))
+                            }
             hor = g.horizon(0.0, width:  Double(self.frame.width), pitch: pangle*M_PI/180, azimuth: heading, roll: roll)
             println("called")
             
