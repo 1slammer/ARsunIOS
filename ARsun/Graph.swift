@@ -135,10 +135,17 @@ class Graph : NSObject {
         
         var output:[Float] = [0.0, 0.0, 0.0, 0.0]
         
-        var center:Double = angle.degreesToRadians - pitch - M_PI // correction for frame of reference off by 90 deg
-        //println(pitch)
+        var center: Double!
+        if (pitch > M_PI){
+            center = 2*M_PI - pitch
+        }
+        else {
+        center = -pitch
+        }
+        println("angle \(pitch*180/M_PI)")
         center = center * pdh
         center = Double(centerH) - center
+        println(center)
         output[0] = Float(centerW) - Float(width/2.0)
         output[1] = Float(center)
         output[2] = Float(centerW) + Float(width/2.0)
@@ -149,9 +156,9 @@ class Graph : NSObject {
     func points(pitch:Double, azimuth:Double, roll:Double) -> [Double] {
         var output:[Double]!
         if(ready){
-            //println(azimuth)
+            //println(pitch)
             var azimuth1 = normalize((azimuth - M_PI) * (180/M_PI)).degreesToRadians
-            //println(azimuth1)
+            //println(roll)
             
             
             var tmp = Array(count:spCoor.count, repeatedValue:[Double](count:2, repeatedValue:0.0))

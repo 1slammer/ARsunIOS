@@ -14,7 +14,6 @@ class SunView: UIView {
     var pitch:Double!
     var roll:Double!
     var g:Graph!
-    var z = 60
     var m = 60
     var hor: [Float]!
     var heading:Double!
@@ -23,10 +22,26 @@ class SunView: UIView {
     private let image = UIImage(named : "moon_image")!
     func update() -> Void {
         //println("(X,Y)\t(\(accel.x),\(accel.y)")
-        var x = -accel.x
+        var x = accel.x
+        //println(x)
         var y = accel.y
+        var z = accel.z
         var angle = atan2(x, y);
-        println("angle: \(angle)")
+        var pangle = atan2(y, z)
+        angle = angle*180/M_PI
+        angle = angle - 180
+        if(angle < 0){
+            angle = angle + 360
+        }
+        pangle = pangle*180/M_PI
+        pangle = pangle + 90
+        if(pangle < 0){
+            pangle = pangle + 360
+        }
+        
+        //println(y)
+        //println("pangle: \(pangle)")
+        //println("angle is \(angle)")
         roll = accel.x * M_PI
         pitch  = accel.y * M_PI
         if g.ready {
@@ -42,7 +57,7 @@ class SunView: UIView {
 //                            for var zp = 2; zp < points.count; zp = zp + 2 {
 //                                path.addLineToPoint(CGPoint(x: points[zp], y: points[zp + 1]))
 //                            }
-            hor = g.horizon(0.0, width:  Double(self.frame.width), pitch: pitch, azimuth: heading, roll: roll)
+            hor = g.horizon(0.0, width:  Double(self.frame.width), pitch: pangle*M_PI/180, azimuth: heading, roll: roll)
             println("called")
             
             dispatch_async(dispatch_get_main_queue(), { self.setNeedsDisplayInRect(self.frame)});
