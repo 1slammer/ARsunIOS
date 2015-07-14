@@ -39,9 +39,6 @@ class SunView: UIView {
             pangle = pangle + 360
         }
         
-        //println(y)
-        //println("pangle: \(pangle)")
-        //println("angle is \(angle)")
         roll = accel.x * M_PI
         pitch  = accel.y * M_PI
         if g.ready {
