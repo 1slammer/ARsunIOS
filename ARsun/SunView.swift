@@ -44,7 +44,7 @@ class SunView: UIView {
 //                            }
             hor = g.horizon(0.0, width:  Double(self.frame.width), pitch: pitch, azimuth: heading, roll: roll)
             println("called")
-            
+            // Do the view updating/redrawing on the main thread so it is smoother
             dispatch_async(dispatch_get_main_queue(), { self.setNeedsDisplayInRect(self.frame)});
     
         }
