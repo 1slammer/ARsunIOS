@@ -44,6 +44,11 @@ class SunView: UIView {
             pangle = pangle - 360
         }
         //println("here\(pangle)")
+        
+        
+        //println(y)
+        //println("pangle: \(pangle)")
+        //println("angle is \(angle)")
         if g.ready {
             points = g.points(pangle*M_PI/180, azimuth: heading*M_PI/180, roll: rangle*M_PI/180)
             //for cp in points {
@@ -52,10 +57,14 @@ class SunView: UIView {
 //            path.moveToPoint(CGPoint(x:50, y:50))
 //            path.addLineToPoint(CGPoint(x:z++, y:m++))
 //            println("points:\(z), \(m)" )
-            
-            
-
-                        hor = g.horizon(0.0, width:  Double(self.frame.width), pitch: pangle*M_PI/180, azimuth: heading, roll: rangle)
+            var path = UIBezierPath()
+            path.moveToPoint(CGPoint(x: points[0], y:points[1]))
+                            for var zp = 2; zp < points.count; zp = zp + 2 {
+                                path.addLineToPoint(CGPoint(x: points[zp], y: points[zp + 1]))
+                            }
+            hor = g.horizon(0.0, width:  Double(self.frame.width), pitch: pangle*M_PI/180, azimuth: heading, roll: rangle)
+            println("called")
+            hor = g.horizon(0.0, width:  Double(self.frame.width), pitch: pangle*M_PI/180, azimuth: heading, roll: rangle)
             dispatch_async(dispatch_get_main_queue(), { self.setNeedsDisplayInRect(self.frame)});
     
         }

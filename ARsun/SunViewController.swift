@@ -49,6 +49,9 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
         
         if CLLocationManager.headingAvailable() {
             locationManager.startUpdatingHeading() }
+        else {
+            
+        }
         
         let devices = AVCaptureDevice.devices()
         // Loop through all the capture devices on this phone
@@ -100,6 +103,20 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
         didFailWithError error: NSError!)
     {
         println("Error getting location.")
+        println("here")
+        let settingsAction: UIAlertAction = UIAlertAction(title: "Go to Settings", style: .Cancel) { action -> Void in
+            //Just dismiss the action sheet
+            var appSettings = NSURL(string: UIApplicationOpenSettingsURLString)
+            UIApplication.sharedApplication().openURL(appSettings!)
+        }
+        let alert = UIAlertController(title: "Alert", message: "You must have location updates enabled to use this App.", preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(settingsAction)
+        UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alert, animated: true, completion: nil)
+
+    }
+    
+    func alertHandler() {
+        
     }
     
     override func didReceiveMemoryWarning() {
