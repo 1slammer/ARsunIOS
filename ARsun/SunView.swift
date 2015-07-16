@@ -69,11 +69,7 @@ class SunView: UIView {
 //            path.moveToPoint(CGPoint(x:50, y:50))
 //            path.addLineToPoint(CGPoint(x:z++, y:m++))
 //            println("points:\(z), \(m)" )
-            path = UIBezierPath()
-            path.moveToPoint(CGPoint(x: points[0], y:points[1]))
-                            for var zp = 2; zp < points.count - 2; zp = zp + 2 {
-                                path.addLineToPoint(CGPoint(x: points[zp], y: points[zp + 1]))
-                            }
+                   
             // Do the view updating/redrawing on the main thread so it is smoother
             //hor = g.horizon(0.0, width:  Double(self.frame.width), pitch: pangle*M_PI/180, azimuth: heading, roll: rangle)
             dispatch_async(dispatch_get_main_queue(), { self.setNeedsDisplayInRect(self.frame)});
@@ -112,14 +108,17 @@ class SunView: UIView {
 //        }
         //}
         if points != nil{
-//            path.lineWidth = 5.0
-//            path.moveToPoint(CGPoint(x: points[0], y:points[1]))
-//            for var zp = 2; zp < points.count; zp = zp + 2 {
-//                path.addLineToPoint(CGPoint(x: points[zp], y: points[zp + 1]))
-//                println("points:,\(points[zp]), \(points[zp + 1])")
-//            }
-//
+            path = UIBezierPath()
+            path.moveToPoint(CGPoint(x: points[0], y:points[1]))
+            for var zp = 2; zp < points.count - 2; zp = zp + 2 {
+                path.addLineToPoint(CGPoint(x: points[zp], y: points[zp + 1]))
+                println(zp)
+                
+            }
+            path.closePath()
+            
          path.stroke()
+            
 //            var currentPoint = CGPoint(x: Double(self.frame.width/2 - 30), y: Double(hor[1] - 40))
 //            image.drawAtPoint(currentPoint)
         }
