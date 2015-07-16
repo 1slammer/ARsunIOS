@@ -45,10 +45,14 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.delegate = self
         locationManager.headingFilter = kCLHeadingFilterNone
+
         locationManager.startUpdatingLocation()
         
         if CLLocationManager.headingAvailable() {
             locationManager.startUpdatingHeading() }
+        else {
+            
+        }
         
         let devices = AVCaptureDevice.devices()
         // Loop through all the capture devices on this phone
@@ -67,10 +71,13 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
 
         
         motionManager.deviceMotionUpdateInterval = updateInterval
-        motionManager.startDeviceMotionUpdatesToQueue(queue, withHandler: {
+        motionManager.startDeviceMotionUpdatesUsingReferenceFrame(CMAttitudeReferenceFrame.XArbitraryZVertical, toQueue:queue, withHandler: {
             (motionData: CMDeviceMotion!, error: NSError!) -> Void in
             self.sunView.accel = motionData.gravity
             self.g = self.sunView.g
+            self.sunView.attitude = self.motionManager.deviceMotion.attitude;
+            self.sunView.rm = self.sunView.attitude.rotationMatrix;
+
             // We want to do most of the cpu intense data processing on the background thread so
             // we don't keep the view from redrawing.
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
@@ -81,9 +88,9 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
     
     func locationManager(manager: CLLocationManager!, didUpdateHeading newHeading: CLHeading!) {
         let h2 = newHeading.trueHeading // will be -1 if we have no location info
-        var heading = h2*M_PI/180
+        var heading = h2
         sunView.heading = heading
-    }
+        }
     func locationManager(manager: CLLocationManager!,
         didUpdateLocations locations: [AnyObject]!) {
             if (!hasUpdated){
@@ -100,6 +107,20 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
         didFailWithError error: NSError!)
     {
         println("Error getting location.")
+        println("here")
+        let settingsAction: UIAlertAction = UIAlertAction(title: "Go to Settings", style: .Cancel) { action -> Void in
+            //Just dismiss the action sheet
+            var appSettings = NSURL(string: UIApplicationOpenSettingsURLString)
+            UIApplication.sharedApplication().openURL(appSettings!)
+        }
+        let alert = UIAlertController(title: "Alert", message: "You must have location updates enabled to use this App.", preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(settingsAction)
+        UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alert, animated: true, completion: nil)
+
+    }
+    
+    func alertHandler() {
+        
     }
     
     override func didReceiveMemoryWarning() {
