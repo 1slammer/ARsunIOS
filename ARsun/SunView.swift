@@ -34,8 +34,8 @@ class SunView: UIView {
         var rangle = atan2(x, y);
         var pangle = atan2(y, z)
 
-        var diff1 = heading - oldHeading
-        var diff2 = pangle - pangle2
+        var diff1 = abs(heading - oldHeading)
+        var diff2 = abs(pangle - pangle2)
         if diff1 > 1.0 || diff2 > 1.0 {
         rangle = rangle*180/M_PI
         pangle = pangle*180/M_PI
@@ -60,7 +60,7 @@ class SunView: UIView {
             }
         
         oldHeading = heading
-        pangle2 = pangle
+        pangle2 = pangle*180/M_PI
         if g.ready {
             points = g.points(pangle*M_PI/180, azimuth: heading*M_PI/180, roll: rangle*M_PI/180)
             // Do the view updating/redrawing on the main thread so it is smoother
@@ -98,7 +98,6 @@ class SunView: UIView {
                 path.addLineToPoint(CGPoint(x: points[zp], y: points[zp + 1]))
                 
             }
-            path.closePath()
             
          path.stroke()
 

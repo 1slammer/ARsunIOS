@@ -45,6 +45,8 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.delegate = self
         locationManager.headingFilter = kCLHeadingFilterNone
+        locationManager.headingOrientation = CLDeviceOrientation.LandscapeRight
+        
 
         locationManager.startUpdatingLocation()
         
@@ -88,8 +90,12 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
     
     func locationManager(manager: CLLocationManager!, didUpdateHeading newHeading: CLHeading!) {
         let h2 = newHeading.trueHeading // will be -1 if we have no location info
-        var heading = h2
+        var heading = (h2 + 90) % 360
+        //println(heading)
+        //println(locationManager.headingOrientation.rawValue)
+        
         sunView.heading = heading
+        
         }
     func locationManager(manager: CLLocationManager!,
         didUpdateLocations locations: [AnyObject]!) {

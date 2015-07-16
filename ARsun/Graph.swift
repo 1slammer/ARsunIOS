@@ -84,13 +84,13 @@ class Graph : NSObject {
         if let adj:[Double]! = myMap[time] { // adj is Optional<String[]>
             if let adj2 = adj {  // adj2 is String[]
                 curAlt = adj2[0] as Double
-                println(curAlt)
+                //println(curAlt)
             }
         }
         if let adj3:[Double]! = myMap[time] { // adj is Optional<String[]>
             if let adj4 = adj3 {  // adj2 is String[]
                 curAz = adj4[0] as Double
-                println(curAz)
+                //println(curAz)
                 }
         }
             var temp0: Double
@@ -152,16 +152,17 @@ class Graph : NSObject {
     func points(pitch:Double, azimuth:Double, roll:Double) -> [Double] {
         var output:[Double]!
         if(ready){
-            println("azimuth: \(azimuth*180/M_PI)")
+            //println("azimuth: \(azimuth*180/M_PI)")
         
             var tmp = Array(count:spCoor.count, repeatedValue:[Double](count:2, repeatedValue:0.0))
             output = [Double](count:(spCoor.count*2), repeatedValue: 0.0)
             for var i = 0; i < spCoor.count; i++ {
+                //println(azimuth)
                 //degrees from phone pointing vector
                 tmp[i][0] = (spCoor[i][0]) - pitch
-                tmp[i][1] = (spCoor[i][1]) - azimuth
+                tmp[i][1] = azimuth-(spCoor[i][1])
                 if(i % 150 == 0){
-                println(spCoor[i][1]*180/M_PI)
+                //println(spCoor[i][1]*180/M_PI)
                     //println("sp_coor: (\(spCoor[i][0]),\(spCoor[i][1]))]")
                 //    println("sp_coor_deg: (\(spCoor[i][0]*180/M_PI),\(spCoor[i][1]*180/M_PI))]")
                 //println("tmp_from_ptvector: (\(tmp[i][0]),\(tmp[i][1]))]")
