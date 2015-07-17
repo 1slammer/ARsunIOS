@@ -53,11 +53,9 @@ class Graph : NSObject {
         formatter.dateFormat = usDateFormat
         var myDate = formatter.stringFromDate(NSDate())
         var range = Range(start: advance(myDate.startIndex, 12), end: advance(myDate.startIndex, 17))
-        //time = myDate.substringWithRange(range)
-        time = "16:45"
+        time = myDate.substringWithRange(range)
 
-        
-    }
+        }
     
     func setMap(mapIn: [String: [Double]]!) {
         myMap = mapIn
@@ -68,9 +66,6 @@ class Graph : NSObject {
         else {
             containsT = false
         }
-//        for val in myMap {
-//            println(val)
-//        }
     }
     
     func upDateCoordinates(coorIn: [[Double]]!){
@@ -92,7 +87,6 @@ class Graph : NSObject {
             if let adj = myMap[time] as [Double]?{ // adj is Optional<String[]>
                 curAlt = adj[0] as Double
                 curAz = adj[1] as Double
-                //println("alt:\(curAlt)")
             }
 
 
@@ -165,31 +159,18 @@ class Graph : NSObject {
             var tmp = Array(count:spCoor.count, repeatedValue:[Double](count:2, repeatedValue:0.0))
             output = [Double](count:(spCoor.count*2), repeatedValue: 0.0)
             for var i = 0; i < spCoor.count; i++ {
-                //println(azimuth)
                 //degrees from phone pointing vector
                 tmp[i][0] = (spCoor[i][0]) - pitch
                 tmp[i][1] = azimuth-(spCoor[i][1])
                 if crPoints[0] == spCoor[i][0] && crPoints[1] == spCoor[i][1]
                 { j = i}
-                if(i % 150 == 0){
-                //println(spCoor[i][1]*180/M_PI)
-                    //println("sp_coor: (\(spCoor[i][0]),\(spCoor[i][1]))]")
-                //    println("sp_coor_deg: (\(spCoor[i][0]*180/M_PI),\(spCoor[i][1]*180/M_PI))]")
-                //println("tmp_from_ptvector: (\(tmp[i][0]),\(tmp[i][1]))]")
-                }
                 //pixels per degree from pointing vector
                 tmp[i][0] = tmp[i][0] * pdh;
                 //println(spCoor[i][0]*M_PI/180)
                 tmp[i][1] = tmp[i][1] * pdw;
-                //println("tmp_pixels: (\(tmp[i][0]),\(tmp[i][1]))]")
-                //roll correction using expanded rotation matrix
-                //roll +=
-                //tmp[i][0] = Math.sin(roll) * tmp[i][1] + Math.cos(roll) * tmp[i][0]; //vertical component
-                //tmp[i][1] = Math.cos(roll) * tmp[i][1] - Math.sin(roll) * tmp[i][0]; //horixontal component
                 //correct coordinates to screen coordinates (0,0) top left and Y axis is inverted
                 tmp[i][0] = Double(centerH) - tmp[i][0]
                 tmp[i][1] = Double(centerW) - tmp[i][1]
-                //println("pix_screen_centered: (\(tmp[i][0]),\(tmp[i][1]))]")
             }
             for (var z = 0; z < tmp.count; z++) {
                 output[z*2] = round(tmp[z][1])

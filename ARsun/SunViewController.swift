@@ -12,12 +12,12 @@ import CoreLocation
 import CoreMotion
 
 class SunViewController: UIViewController, CLLocationManagerDelegate {
+    //Member variables
     private let fps24 = 1.0/24.0;
     private let fps30 = 1.0/30.0;
     private let fps60 = 1.0/60.0;
     let sunView = SunView(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - 60))
     private let hz1 = 1.0;
-    private var updateInterval: Double!
     private let motionManager = CMMotionManager()
     private let queue = NSOperationQueue()
     let captureSession = AVCaptureSession()
@@ -39,22 +39,23 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateInterval = fps24
+        //Set the update interval for the sensors
+        motionManager.deviceMotionUpdateInterval = fps24
+
         captureSession.sessionPreset = AVCaptureSessionPresetHigh
+        //This makes the user authorize constant access to their location
+        //They will recieve an alert asking them to authorize.
         locationManager.requestAlwaysAuthorization()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.delegate = self
+        //Can set a filter on how often the updates happen
         locationManager.headingFilter = kCLHeadingFilterNone
+        //Set the device orientation for purposes of heading updates
         locationManager.headingOrientation = CLDeviceOrientation.LandscapeRight
-        
-
-        locationManager.startUpdatingLocation()
-        
+        //Start updating the location. The delegate is set to self above so that this class
+        // must implement the required callback methods and will recieve callbacks(i.e. didUpdateLocation)
         if CLLocationManager.headingAvailable() {
             locationManager.startUpdatingHeading() }
-        else {
-            
-        }
         
         let devices = AVCaptureDevice.devices()
         // Loop through all the capture devices on this phone
@@ -71,34 +72,32 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
             beginSession()
         }
 
-        
-        motionManager.deviceMotionUpdateInterval = updateInterval
+        //Start motion updates to get acceleration data
         motionManager.startDeviceMotionUpdatesUsingReferenceFrame(CMAttitudeReferenceFrame.XArbitraryZVertical, toQueue:queue, withHandler: {
             (motionData: CMDeviceMotion!, error: NSError!) -> Void in
+            //Give the sunView a pointer to acceleration matrix
             self.sunView.accel = motionData.gravity
+            //Get a pointer to the graph in sunView
             self.g = self.sunView.g
-            self.sunView.attitude = self.motionManager.deviceMotion.attitude;
-            self.sunView.rm = self.sunView.attitude.rotationMatrix;
-
-            // We want to do most of the cpu intense data processing on the background thread so
+            // We want to do most of the cpu bound data processing on the background thread so
             // we don't keep the view from redrawing.
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 self.sunView.update()
             })
         })
     }
-    
+    //Delegate callback method for heading updates
     func locationManager(manager: CLLocationManager!, didUpdateHeading newHeading: CLHeading!) {
         let h2 = newHeading.trueHeading // will be -1 if we have no location info
+        //Correct heading to terms we need
         var heading = (h2 + 90) % 360
-        //println(heading)
-        //println(locationManager.headingOrientation.rawValue)
-        
+        // Give sunVIew a reference to heading
         sunView.heading = heading
-        
         }
-    func locationManager(manager: CLLocationManager!,
+    //Delegate callback method for location updates
+     func locationManager(manager: CLLocationManager!,
         didUpdateLocations locations: [AnyObject]!) {
+            // Just want the one location check, so get it and turn the updates off
             if (!hasUpdated){
                 hasUpdated = true
                 location = locations.last as! CLLocation
@@ -108,12 +107,12 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
             }
             
     }
-    
+    // Delegate error handler
     func locationManager(manager: CLLocationManager!,
         didFailWithError error: NSError!)
     {
         println("Error getting location.")
-        println("here")
+        // Set up and present an alert if location updates are not turned on
         let settingsAction: UIAlertAction = UIAlertAction(title: "Go to Settings", style: .Cancel) { action -> Void in
             //Just dismiss the action sheet
             var appSettings = NSURL(string: UIApplicationOpenSettingsURLString)
@@ -125,15 +124,11 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
 
     }
     
-    func alertHandler() {
-        
-    }
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+    // Start capture session and instantiate buttons, add the action methods to them and place them on view.
     func beginSession() {
         var err : NSError? = nil
         captureSession.addInput(AVCaptureDeviceInput(device: captureDevice, error: &err))
@@ -167,9 +162,11 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
         self.view.bringSubviewToFront(sunView)        
         
     }
+    //Moon Button action method, called when moon button pressed.
     func moonButtonAction(sender:UIButton!)
     {
         dataGetter = NavalDataGetter(bodyIn: "Moon", location: location)
+        //wait until data reader is finished, then set the variables for the graph
         while !dataGetter.isFinished {
             sleep(1)
         }
@@ -177,10 +174,11 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
         g.updateCoordinates(dataGetter.orderedVals)
         g.crPoints = dataGetter.currentPoints
     }
-    
+    // SunButton action method, called when the sun button is pressed.
     func sunButtonAction(sender:UIButton!)
     {
         dataGetter = NavalDataGetter(bodyIn: "Sun", location: location)
+        //wait until data reader is finished, then set the variables for the graph
         while !dataGetter.isFinished {
             sleep(1)
         }

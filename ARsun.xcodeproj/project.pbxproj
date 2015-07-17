@@ -12,7 +12,6 @@
 		CB4A477D1B50EB18002C733E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB4A477C1B50EB18002C733E /* Images.xcassets */; };
 		CBBF95D41B4981E300236A3A /* SunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBF95D31B4981E300236A3A /* SunViewController.swift */; };
 		CBF139681B4341C3008F8901 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF139671B4341C3008F8901 /* AppDelegate.swift */; };
-		CBF1396A1B4341C3008F8901 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF139691B4341C3008F8901 /* ViewController.swift */; };
 		CBF1396D1B4341C3008F8901 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBF1396B1B4341C3008F8901 /* Main.storyboard */; };
 		CBF139721B4341C3008F8901 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBF139701B4341C3008F8901 /* LaunchScreen.xib */; };
 		CBF1397E1B4341C3008F8901 /* ARsunTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF1397D1B4341C3008F8901 /* ARsunTests.swift */; };
@@ -38,7 +37,6 @@
 		CBF139621B4341C3008F8901 /* ARsun.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARsun.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBF139661B4341C3008F8901 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CBF139671B4341C3008F8901 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		CBF139691B4341C3008F8901 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		CBF1396C1B4341C3008F8901 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CBF139711B4341C3008F8901 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		CBF139771B4341C3008F8901 /* ARsunTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ARsunTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -105,7 +103,6 @@
 		CBF139651B4341C3008F8901 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				CBF139691B4341C3008F8901 /* ViewController.swift */,
 				CBF139661B4341C3008F8901 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -231,7 +228,6 @@
 			files = (
 				CBBF95D41B4981E300236A3A /* SunViewController.swift in Sources */,
 				CB33A70B1B47351F00F136F5 /* SunView.swift in Sources */,
-				CBF1396A1B4341C3008F8901 /* ViewController.swift in Sources */,
 				CBF139681B4341C3008F8901 /* AppDelegate.swift in Sources */,
 				CBF1398A1B4378D1008F8901 /* NavalDataGetter.swift in Sources */,
 				CB33A7091B45C5A800F136F5 /* Graph.swift in Sources */,

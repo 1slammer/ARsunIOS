@@ -66,7 +66,7 @@ class NavalDataGetter : NSObject {
         var dayString = myDate.substringWithRange(range)
         range = Range(start: advance(myDate.startIndex, 11), end: advance(myDate.startIndex, 17))
         let timeString = myDate.substringWithRange(range)
-        crTime = "16:45" //timeString
+        crTime = timeString
         var monthInt: Int! = monthString.toInt()
         monthInt = monthInt!/1
         monthString = String(monthInt as Int)

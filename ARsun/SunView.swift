@@ -10,6 +10,7 @@ import UIKit
 import CoreMotion
 
 class SunView: UIView {
+    //Member variables
     var accel = CMAcceleration(x: 0, y: 0, z: 0)
     var pitch:Double!
     var roll:Double!
@@ -17,41 +18,37 @@ class SunView: UIView {
     var m = 60
     var hor: [Float]!
     var oldHeading = 0.0
-    var attitude:CMAttitude!
-    var rm:CMRotationMatrix!
     var heading:Double!
-    var hasbeen:Bool!
     var points:[Double]!
     var bodyLoc:[Double]!
     var path:UIBezierPath!
     var pangle2 = 0.0
     private let image = UIImage(named : "moon_image")!
+    // Method called anytime the acceleration data gets updated
     func update() -> Void {
-        var x = accel.x
-        //println(x)
-        var y = accel.y
-        var z = accel.z
-
-        var rangle = atan2(x, y);
-        var pangle = atan2(y, z)
-
+        //rangle stands for "roll angle"
+        var rangle = atan2(accel.x, accel.y)
+        //pangle stands for "pitch angle"
+        var pangle = atan2(accel.y, accel.z)
+        // Difference between last heading used and new incoming heading
         var diff1 = abs(heading - oldHeading)
+        //Difference between last roll angle and the incoming roll angle
         var diff2 = abs(pangle - pangle2)
+        // Sort of make-shift low-pass filter.
         if diff1 > 1.0 || diff2 > 1.0 {
-        rangle = rangle*180/M_PI
-        pangle = pangle*180/M_PI
-        //pangle = pangle - 180
-        if(rangle < 0){
-            rangle = rangle + 360
-        }
         
-        pangle = pangle + 90
+        // Make various correction to get values into correct coordinates
+        if(rangle < 0){
+            rangle = rangle + 2.0*M_PI
+        }
+        pangle = pangle + M_PI/2.0
         if(pangle < 0){
-            pangle = pangle + 360
+            pangle = pangle + 2.0*M_PI
         }
-        if pangle > 180 {
-            pangle = pangle - 360
+        if pangle > M_PI {
+            pangle = pangle - 2*M_PI
         }
+            // Attempt to correct for pitch angle flipping over when phone is inclined past 45 degrees
             if abs(heading - oldHeading) > 5.0 {
                 if pangle > 44.0 {
                 heading = (heading + 180) % 360
@@ -59,7 +56,7 @@ class SunView: UIView {
                 }
             
             }
-        
+        // Save old heading for use with low-pass filter
         oldHeading = heading
         pangle2 = pangle*180/M_PI
         if g.ready {
@@ -72,7 +69,7 @@ class SunView: UIView {
         }
         }
     }
-    
+    // Initializer which calls common initializer
     override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
@@ -85,7 +82,6 @@ class SunView: UIView {
     
     func commonInit() -> Void {
         g = Graph( degW: 32.13, degH: 53.13, screenHor: Int(self.bounds.width),screenVert: Int(self.bounds.height))
-        hasbeen = true
     }
     
     override func drawRect(rect: CGRect) {
@@ -93,6 +89,7 @@ class SunView: UIView {
         var color:UIColor = UIColor.lightGrayColor()
         color.set()
         if points != nil{
+            // If the points are ready, build the path for them
             path = UIBezierPath()
             path.lineWidth = 5.0
             path.moveToPoint(CGPoint(x: points[0], y:points[1]))
@@ -100,6 +97,7 @@ class SunView: UIView {
                 path.addLineToPoint(CGPoint(x: points[zp], y: points[zp + 1]))
                 
             }
+            // Logic for drawing the moon or sun image where it is currently
             if g.bPoints[0] != -1.0 {
                if g.bPoints[1] != -1.0 {
             var currentPoint = CGPoint(x: g.bPoints[0], y: g.bPoints[1])
@@ -107,6 +105,7 @@ class SunView: UIView {
             image.drawAtPoint(currentPoint)
                 }
             }
+        // Draw the path on the view.
          path.stroke()
 
         }
