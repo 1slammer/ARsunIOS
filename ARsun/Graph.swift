@@ -29,6 +29,8 @@ class Graph : NSObject {
     var pdw: Double = 0
     var time: String!
     var centerW:Int = 0
+    var isSun = false
+    var isMoon = false
     var centerH:Int = 0
     var myMap: [String: [Double]]!
     var curAz:Double! = 0
@@ -178,7 +180,7 @@ class Graph : NSObject {
                 output[z*2 + 1] = round(tmp[z][0])
                 if z == j {
                     bPoints = [tmp[z][1], tmp[z][0]]
-                    println(bPoints)
+                   
                 }
     
                 }
@@ -190,6 +192,7 @@ class Graph : NSObject {
     func getMap() -> [String: [Double]]! {
         return myMap
     }
+   
 
     }
 

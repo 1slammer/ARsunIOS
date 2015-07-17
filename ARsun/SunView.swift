@@ -23,7 +23,9 @@ class SunView: UIView {
     var bodyLoc:[Double]!
     var path:UIBezierPath!
     var pangle2 = 0.0
-    private let image = UIImage(named : "moon_image")!
+    private let moonImage = UIImage(named : "moon_image")!
+    private let sunImage = UIImage(named : "sun_image")!
+
     // Method called anytime the acceleration data gets updated
     func update() -> Void {
         //rangle stands for "roll angle"
@@ -102,7 +104,12 @@ class SunView: UIView {
                if g.bPoints[1] != -1.0 {
             var currentPoint = CGPoint(x: g.bPoints[0], y: g.bPoints[1])
             //var currentPoint = CGPoint(x: bodyLoc[0], y: bodyLoc[1])
-            image.drawAtPoint(currentPoint)
+                if g.isMoon {
+                    moonImage.drawAtPoint(currentPoint)
+                    }
+                else if g.isSun {
+                    sunImage.drawAtPoint(currentPoint)
+                    }
                 }
             }
         // Draw the path on the view.

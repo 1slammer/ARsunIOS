@@ -13,9 +13,9 @@ import CoreMotion
 
 class SunViewController: UIViewController, CLLocationManagerDelegate {
     //Member variables
-    private let fps24 = 1.0/24.0;
-    private let fps30 = 1.0/30.0;
-    private let fps60 = 1.0/60.0;
+    private let fps24 = 1.0/24.0
+    private let fps30 = 1.0/30.0
+    private let fps60 = 1.0/60.0
     let sunView = SunView(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - 60))
     private let hz1 = 1.0;
     private let motionManager = CMMotionManager()
@@ -55,7 +55,8 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
         //Start updating the location. The delegate is set to self above so that this class
         // must implement the required callback methods and will recieve callbacks(i.e. didUpdateLocation)
         if CLLocationManager.headingAvailable() {
-            locationManager.startUpdatingHeading() }
+            locationManager.startUpdatingHeading()
+        locationManager.startUpdatingLocation()}
         
         let devices = AVCaptureDevice.devices()
         // Loop through all the capture devices on this phone
@@ -173,6 +174,8 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
         g.setMap(dataGetter.myVals)
         g.updateCoordinates(dataGetter.orderedVals)
         g.crPoints = dataGetter.currentPoints
+        g.isMoon = true
+        g.isSun = false
     }
     // SunButton action method, called when the sun button is pressed.
     func sunButtonAction(sender:UIButton!)
@@ -184,6 +187,10 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
         }
         g.setMap(dataGetter.myVals);
         g.updateCoordinates(dataGetter.orderedVals)
+        g.crPoints = dataGetter.currentPoints
+        g.isMoon = true
+        g.isMoon = false
+
 
     }
     
