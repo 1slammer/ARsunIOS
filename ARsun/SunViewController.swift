@@ -173,8 +173,9 @@ class SunViewController: UIViewController, CLLocationManagerDelegate {
         while !dataGetter.isFinished {
             sleep(1)
         }
-        g.setMap(dataGetter.myVals);
+        g.setMap(dataGetter.myVals)
         g.updateCoordinates(dataGetter.orderedVals)
+        g.crPoints = dataGetter.currentPoints
     }
     
     func sunButtonAction(sender:UIButton!)

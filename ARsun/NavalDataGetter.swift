@@ -21,6 +21,8 @@ class NavalDataGetter : NSObject {
     var flag4 = false
     var url:String!
     var isMoon = false
+    var currentPoints = [Double](count:2, repeatedValue:-1.0)
+    var crTime = " "
     
 
     init(bodyIn:String, location:CLLocation) {
@@ -64,6 +66,7 @@ class NavalDataGetter : NSObject {
         var dayString = myDate.substringWithRange(range)
         range = Range(start: advance(myDate.startIndex, 11), end: advance(myDate.startIndex, 17))
         let timeString = myDate.substringWithRange(range)
+        crTime = "16:45" //timeString
         var monthInt: Int! = monthString.toInt()
         monthInt = monthInt!/1
         monthString = String(monthInt as Int)
@@ -126,13 +129,15 @@ class NavalDataGetter : NSObject {
                         }
                     else if x == 1 {
                         var doubleValue : Double = NSString(string: val).doubleValue
-                        myDubs.append(doubleValue)
+                        myDubs.append(doubleValue.degreesToRadians)
                         self.orderedVals.append(Array(count: 2, repeatedValue: 1))
                         self.orderedVals[y][0] = (val as NSString).doubleValue.degreesToRadians
                     }
                     else if x == 2 {
                         var doubleValue : Double = NSString(string: val).doubleValue
                         myDubs.append(doubleValue.degreesToRadians)
+                        if key == self.crTime
+                        { self.currentPoints = myDubs }
                         self.orderedVals[y][1] = (val as NSString).doubleValue.degreesToRadians 
                         if !self.isMoon {
                         x = -1
@@ -140,7 +145,8 @@ class NavalDataGetter : NSObject {
                         else if self.isMoon {
                             
                         }
-                        self.myVals[key] = myDubs
+                        self.myVals.updateValue(myDubs, forKey:key)
+                        //println(self.myVals[key])
                         myDubs = [Double]()
                         y++
                     }
@@ -154,10 +160,6 @@ class NavalDataGetter : NSObject {
         
             }
             self.isFinished = true
-//            for val in self.myVals{
-//                println(val)
-//            }
-
         }
         task.resume()
     }

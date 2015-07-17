@@ -22,6 +22,7 @@ class SunView: UIView {
     var heading:Double!
     var hasbeen:Bool!
     var points:[Double]!
+    var bodyLoc:[Double]!
     var path:UIBezierPath!
     var pangle2 = 0.0
     private let image = UIImage(named : "moon_image")!
@@ -63,6 +64,7 @@ class SunView: UIView {
         pangle2 = pangle*180/M_PI
         if g.ready {
             points = g.points(pangle*M_PI/180, azimuth: heading*M_PI/180, roll: rangle*M_PI/180)
+            bodyLoc = g.plotSun(pangle*M_PI/180, azimuth: heading*M_PI/180, roll: rangle*M_PI/180)
             // Do the view updating/redrawing on the main thread so it is smoother
             //hor = g.horizon(0.0, width:  Double(self.frame.width), pitch: pangle*M_PI/180, azimuth: heading, roll: rangle)
             dispatch_async(dispatch_get_main_queue(), { self.setNeedsDisplayInRect(self.frame)});
@@ -98,7 +100,13 @@ class SunView: UIView {
                 path.addLineToPoint(CGPoint(x: points[zp], y: points[zp + 1]))
                 
             }
-            
+            if g.bPoints[0] != -1.0 {
+               if g.bPoints[1] != -1.0 {
+            var currentPoint = CGPoint(x: g.bPoints[0], y: g.bPoints[1])
+            //var currentPoint = CGPoint(x: bodyLoc[0], y: bodyLoc[1])
+            image.drawAtPoint(currentPoint)
+                }
+            }
          path.stroke()
 
         }

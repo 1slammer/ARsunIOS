@@ -36,6 +36,8 @@ class Graph : NSObject {
     var ready = false
     var containsT = false
     var spCoor:[[Double]]!
+    var crPoints = [Double]()
+    var bPoints = [Double](count:2, repeatedValue:-1.0)
     
     init(degW:Double, degH:Double, screenHor:Int, screenVert:Int){
         cam_h = degH.degreesToRadians
@@ -50,20 +52,25 @@ class Graph : NSObject {
         let usDateFormat = NSDateFormatter.dateFormatFromTemplate("yyyy/MM/dd HH:mm:ss", options: 0, locale: NSLocale(localeIdentifier: "en-US"))
         formatter.dateFormat = usDateFormat
         var myDate = formatter.stringFromDate(NSDate())
-        var range = Range(start: advance(myDate.startIndex, 11), end: advance(myDate.startIndex, 17))
-        time = myDate.substringWithRange(range)
+        var range = Range(start: advance(myDate.startIndex, 12), end: advance(myDate.startIndex, 17))
+        //time = myDate.substringWithRange(range)
+        time = "16:45"
 
         
     }
     
     func setMap(mapIn: [String: [Double]]!) {
         myMap = mapIn
-        if let a = myMap[time] {
-            containsT = true
+        //let a = myMap[time]
+        if myMap.indexForKey(time) != nil{
+        containsT = true
         }
         else {
             containsT = false
         }
+//        for val in myMap {
+//            println(val)
+//        }
     }
     
     func upDateCoordinates(coorIn: [[Double]]!){
@@ -80,35 +87,35 @@ class Graph : NSObject {
     }
     
     func plotSun(pitch:Double, azimuth:Double, roll:Double) -> [Double] {
-        
-        if let adj:[Double]! = myMap[time] { // adj is Optional<String[]>
-            if let adj2 = adj {  // adj2 is String[]
-                curAlt = adj2[0] as Double
-                //println(curAlt)
+        var output: [Double] = [100,100]
+        if(!myMap.isEmpty){
+            if let adj = myMap[time] as [Double]?{ // adj is Optional<String[]>
+                curAlt = adj[0] as Double
+                curAz = adj[1] as Double
+                //println("alt:\(curAlt)")
             }
-        }
-        if let adj3:[Double]! = myMap[time] { // adj is Optional<String[]>
-            if let adj4 = adj3 {  // adj2 is String[]
-                curAz = adj4[0] as Double
-                //println(curAz)
-                }
-        }
-            var temp0: Double
-            var temp1:Double
-            
-            var azimuth1 = normalize((azimuth-M_PI).degreesToRadians).degreesToRadians
-            temp0 = curAlt.degreesToRadians - pitch
-            temp1 = curAz.degreesToRadians - azimuth1
-            var output = [Double](count: 3, repeatedValue: 0.0)
-            output[0] = temp0 * pdh
-            output[1] = temp1 * pdw
-            output[0] = Double(centerH) - output[0]
-            output[1] += Double(centerW)
-            if(output[0] < 0.0) {output[0]=0}
+
+
+        var tmp = [Double](count: 2, repeatedValue: 0.0)
+        tmp[0] = curAlt - pitch
+        tmp[1] = (azimuth - curAz)
+            if (tmp[1] < 0) {tmp[1] += 2 * M_PI}
+        tmp[0] = tmp[0] * pdh;
+        tmp[1] = tmp[1] * pdw;
+        tmp[0] = Double(centerH) - tmp[0]
+        tmp[1] = Double(centerW) - tmp[1]
+//            output[0] = temp0 * pdh
+//            output[1] = temp1 * pdw
+//            output[0] = Double(centerH) - output[0]
+//            output[1] = Double(centerW) - output[1]
+         output = tmp
+       if(output[0] < 0.0) {output[0]=0}
             else if(output[0] > Double(scrH)) {output[0] = Double(scrH)}
             if(output[1] < 0) {output[1]=0}
             else if(output[1] > Double(scr_w)) {output[1] = Double(scr_w)}
             return output
+    }
+        return output
     }
 
 
@@ -151,6 +158,7 @@ class Graph : NSObject {
     
     func points(pitch:Double, azimuth:Double, roll:Double) -> [Double] {
         var output:[Double]!
+        var j = -1
         if(ready){
             //println("azimuth: \(azimuth*180/M_PI)")
         
@@ -161,6 +169,8 @@ class Graph : NSObject {
                 //degrees from phone pointing vector
                 tmp[i][0] = (spCoor[i][0]) - pitch
                 tmp[i][1] = azimuth-(spCoor[i][1])
+                if crPoints[0] == spCoor[i][0] && crPoints[1] == spCoor[i][1]
+                { j = i}
                 if(i % 150 == 0){
                 //println(spCoor[i][1]*180/M_PI)
                     //println("sp_coor: (\(spCoor[i][0]),\(spCoor[i][1]))]")
@@ -185,6 +195,10 @@ class Graph : NSObject {
                 output[z*2] = round(tmp[z][1])
                 //println("temp \(z): (\(tmp[z][1]),\(tmp[z][0]))]")
                 output[z*2 + 1] = round(tmp[z][0])
+                if z == j {
+                    bPoints = [tmp[z][1], tmp[z][0]]
+                    println(bPoints)
+                }
     
                 }
 
