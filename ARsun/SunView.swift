@@ -16,7 +16,7 @@ class SunView: UIView {
     var roll:Double!
     var g:Graph!
     var m = 60
-    var hor: [Float]!
+    var hor: [Double]!
     var oldHeading = 0.0
     var heading:Double!
     var points:[Double]!
@@ -33,12 +33,14 @@ class SunView: UIView {
         var rangle = atan2(accel.x, accel.y)
         //pangle stands for "pitch angle"
         var pangle = atan2(accel.y, accel.z)
+        pangle = lowpass(pangle, output: pangle2)
         // Difference between last heading used and new incoming heading
+        
         var diff1 = abs(heading - oldHeading)
         //Difference between last roll angle and the incoming roll angle
         var diff2 = abs(pangle - pangle2)
         // Sort of make-shift low-pass filter.
-        if diff1 > 1.0*M_PI/180 || diff2 > 1.0*M_PI/180 {
+        if diff1 > 0.1 || diff2 > 1.0*M_PI/180 {
         
         // Make various correction to get values into correct coordinates
         if(rangle < 0){
@@ -69,7 +71,7 @@ class SunView: UIView {
             points = g.points(pangle, azimuth: heading, roll: rangle)
             bodyLoc = g.plotSun(pangle, azimuth: heading, roll: rangle)
             // Do the view updating/redrawing on the main thread so it is smoother
-            hor = g.horizon(0.0, width:  Double(self.frame.width), pitch: pangle*M_PI/180, azimuth: heading, roll: rangle)
+            hor = g.horizon(0.0, width:  Double(self.frame.width), pitch: pangle, azimuth: heading, roll: rangle)
             dispatch_async(dispatch_get_main_queue(), { self.setNeedsDisplayInRect(self.frame)});
     
         }
@@ -89,14 +91,23 @@ class SunView: UIView {
     func commonInit() -> Void {
         g = Graph( degW: 32.13, degH: 53.13, screenHor: Int(self.bounds.width),screenVert: Int(self.bounds.height))
     }
-    
+    func lowpass(input: Double, output: Double) -> Double {
+        let ALPHA = 0.15
+        
+            var output = output + ALPHA * (input - output)
+        
+        return output
+    }
     override func drawRect(rect: CGRect) {
         // Drawing code
         var color:UIColor = UIColor.lightGrayColor()
         color.set()
         if points != nil{
             // If the points are ready, build the path for them
-            
+            horizon = UIBezierPath()
+            horizon.moveToPoint(CGPoint(x: (Float)hor[0], y: (float)hor[1]))
+            horizon.addLineToPoint(CGPoint(x: (Float)hor[2],y: (Float)hor[3]))
+            horizon.stroke()
             path = UIBezierPath()
             path.lineWidth = 5.0
             path.moveToPoint(CGPoint(x: points[0], y:points[1]))

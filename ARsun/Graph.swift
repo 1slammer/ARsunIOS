@@ -134,9 +134,9 @@ class Graph : NSObject {
         return tmp
     }
     
-    func horizon(angle:Double, width:Double, pitch:Double, azimuth:Double, roll:Double) -> [Float] {
+    func horizon(angle:Double, width:Double, pitch:Double, azimuth:Double, roll:Double) -> [Double] {
         
-        var output:[Float] = [0.0, 0.0, 0.0, 0.0]
+        var output:[Double] = [0.0, 0.0, 0.0, 0.0]
         
         var center: Double!
         center = -pitch
@@ -145,10 +145,10 @@ class Graph : NSObject {
         center = center * pdh
         center = Double(centerH) - center
         //println(center)
-        output[0] = Float(centerW) - Float(width/2.0)
-        output[1] = Float(center)
-        output[2] = Float(centerW) + Float(width/2.0)
-        output[3] = Float(center)
+        output[0] = Double(centerW) - (width/2.0)
+        output[1] = (center)
+        output[2] = Double(centerW) + (width/2.0)
+        output[3] = (center)
         return output
     }
     
