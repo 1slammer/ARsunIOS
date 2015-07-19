@@ -22,6 +22,7 @@ class SunView: UIView {
     var points:[Double]!
     var bodyLoc:[Double]!
     var path:UIBezierPath!
+    var horizon:UIBezierPath!
     var pangle2 = 0.0
     private let moonImage = UIImage(named : "moon_image")!
     private let sunImage = UIImage(named : "sun_image")!
@@ -37,7 +38,7 @@ class SunView: UIView {
         //Difference between last roll angle and the incoming roll angle
         var diff2 = abs(pangle - pangle2)
         // Sort of make-shift low-pass filter.
-        if diff1 > 1.0 || diff2 > 1.0 {
+        if diff1 > 1.0*M_PI/180 || diff2 > 1.0*M_PI/180 {
         
         // Make various correction to get values into correct coordinates
         if(rangle < 0){
@@ -61,11 +62,14 @@ class SunView: UIView {
         // Save old heading for use with low-pass filter
         oldHeading = heading
         pangle2 = pangle*180/M_PI
+            heading = heading * M_PI/180
+            
         if g.ready {
-            points = g.points(pangle*M_PI/180, azimuth: heading*M_PI/180, roll: rangle*M_PI/180)
-            bodyLoc = g.plotSun(pangle*M_PI/180, azimuth: heading*M_PI/180, roll: rangle*M_PI/180)
+            //println("p/a/r: \(pangle),\(heading),\(rangle)")
+            points = g.points(pangle, azimuth: heading, roll: rangle)
+            bodyLoc = g.plotSun(pangle, azimuth: heading, roll: rangle)
             // Do the view updating/redrawing on the main thread so it is smoother
-            //hor = g.horizon(0.0, width:  Double(self.frame.width), pitch: pangle*M_PI/180, azimuth: heading, roll: rangle)
+            hor = g.horizon(0.0, width:  Double(self.frame.width), pitch: pangle*M_PI/180, azimuth: heading, roll: rangle)
             dispatch_async(dispatch_get_main_queue(), { self.setNeedsDisplayInRect(self.frame)});
     
         }
@@ -92,6 +96,7 @@ class SunView: UIView {
         color.set()
         if points != nil{
             // If the points are ready, build the path for them
+            
             path = UIBezierPath()
             path.lineWidth = 5.0
             path.moveToPoint(CGPoint(x: points[0], y:points[1]))

@@ -173,6 +173,9 @@ class Graph : NSObject {
                 //correct coordinates to screen coordinates (0,0) top left and Y axis is inverted
                 tmp[i][0] = Double(centerH) - tmp[i][0]
                 tmp[i][1] = Double(centerW) - tmp[i][1]
+                //Roll Correction
+                //tmp[i][0] = tmp[i][0]*cos(roll)+tmp[i][1]*sin(roll)
+                //tmp[i][1] = tmp[i][1]*cos(roll)-tmp[i][0]*sin(roll)
             }
             for (var z = 0; z < tmp.count; z++) {
                 output[z*2] = round(tmp[z][1])
